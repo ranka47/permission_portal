@@ -1,0 +1,15 @@
+{% load crispy_forms_tags %}
+
+<style media="screen" type="text/css">
+	.asteriskField {	
+		display: none;
+	}
+</style>
+
+<form action="/your-name/" method="post">
+	{% csrf_token %}
+	<table>
+		{% crispy form %}
+	</table>
+	<input type="submit" value="Submit" />
+</form>

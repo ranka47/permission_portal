@@ -8,4 +8,5 @@ urlpatterns = [
 		url('logout/$', views.logout),
 		url('loggedin/$', views.loggedin),
 		url('invalid/$', views.invalid_login),
+		url('new/$', views.new_permission),
 ]

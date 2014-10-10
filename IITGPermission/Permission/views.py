@@ -4,6 +4,8 @@ from django.views import generic
 from django.core.context_processors import csrf
 from django.contrib import auth
 
+from Permission.models import TaskForm
+
 
 #------------------------------------------------------------
 #       User Authentication Views
@@ -43,7 +45,13 @@ def auth_view(request):
         # Return an 'invalid login' error message.
         return HttpResponseRedirect('Permission/invalid')
 
+
+#------------------------------------------------------------
+#		User's New Permission Form
 #------------------------------------------------------------
 
-
-
+def new_permission(request):
+	c = {}
+	c.update(csrf(request))
+	form = TaskForm()
+	return render_to_response('Permission/new_permission.html', {'form': form})

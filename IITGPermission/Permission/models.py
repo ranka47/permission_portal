@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User, Group, Permission
 from django.utils import timezone
-
+from django.forms import ModelForm
 
 import datetime
 # Create your models here.
@@ -49,4 +49,23 @@ class TaskGroup(models.Model):
 	 		self.task_id.description1='Approved'
 	#def __str__(self):
 	#	return self.task_id.name
+
+class Task(models.Model):
+    user_name = models.CharField(max_length=100)
+    user_department = models.CharField(max_length=100)
+    user_designation = models.CharField(max_length=100)
+    from_date = models.DateTimeField()
+    to_date = models.DateTimeField()
+    purpose = models.TextField()
+    facilities_required = models.TextField()
+
+
+#------------------------------------------------------------
+#       FORMS
+#------------------------------------------------------------
+
+class TaskForm(ModelForm):
+	class Meta:
+		model = Task
+		fields = ('user_name', 'user_department', 'user_designation', 'from_date', 'to_date', 'purpose', 'facilities_required')
 
