@@ -1,3 +1,6 @@
-<h2>Welcome back, {{ full_name }}</h2>
-<p><a href="/Permission/new/">New Permission</a></p>
-<p><a href="/Permission/logout/">Logout</a></p>
+{% extends "base.html" %}
+{% block main %}
+<h1 class="page-header">Howdy, {{ full_name }}!</h1>
+<p> You have no previous permissions.</p>
+<p> For a registering a new permission, click on 'New Permission' on the left</p>
+{% endblock %}
