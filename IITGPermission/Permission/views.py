@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
 from django.core.context_processors import csrf
+from django.views.decorators.csrf import csrf_protect
 from django.contrib import auth
 
 from Permission.models import TaskForm
@@ -47,11 +48,21 @@ def auth_view(request):
 
 
 #------------------------------------------------------------
-#		User's New Permission Form
+#       User's New Permission Form
 #------------------------------------------------------------
 
 def new_permission(request):
-	c = {}
-	c.update(csrf(request))
-	form = TaskForm()
-	return render_to_response('Permission/new_permission.html', {'form': form})
+        form = TaskForm()
+        return render_to_response('Permission/new_permission.html', {'form': form})
+
+def new_permission_submitted(request):
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else: 
+            form = TaskForm()
+            return render_to_response('Permission/new_permission.html', {'form': form})
+    else: 
+        form = TaskForm()
+        return HttpResponseRedirect('Permission/new/', {'form': form})

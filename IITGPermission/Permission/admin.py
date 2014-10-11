@@ -1,10 +1,11 @@
 from django.contrib import admin
-from Permission.models import TaskUser,TaskGroup, Permission, Template
+from Permission import models
 # Register your models here.
 
 
 
-admin.site.register(Permission)
-admin.site.register(Template)
-admin.site.register(TaskUser)
-admin.site.register(TaskGroup)
+admin.site.register(models.Permission)
+admin.site.register(models.Template)
+admin.site.register(models.TaskUser)
+admin.site.register(models.TaskGroup)
+admin.site.register(models.Task)

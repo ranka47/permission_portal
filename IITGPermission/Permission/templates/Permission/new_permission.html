@@ -1,15 +1,14 @@
-{% load crispy_forms_tags %}
+{% extends "base.html" %}
 
-<style media="screen" type="text/css">
-	.asteriskField {	
-		display: none;
-	}
-</style>
+{% block main %}
 
-<form action="/your-name/" method="post">
+<h1 class="page-header">New Permission</h1>
+<form action="/Permission/submitted/" method="post">
 	{% csrf_token %}
 	<table>
-		{% crispy form %}
+		{{ form }}
 	</table>
 	<input type="submit" value="Submit" />
 </form>
+
+{% endblock %}

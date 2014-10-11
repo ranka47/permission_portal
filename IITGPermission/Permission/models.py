@@ -58,6 +58,9 @@ class Task(models.Model):
     to_date = models.DateTimeField()
     purpose = models.TextField()
     facilities_required = models.TextField()
+	
+    def __str__(self):
+        return self.user_name
 
 
 #------------------------------------------------------------

@@ -9,4 +9,5 @@ urlpatterns = [
 		url('loggedin/$', views.loggedin),
 		url('invalid/$', views.invalid_login),
 		url('new/$', views.new_permission),
+		url('submitted/$', views.new_permission_submitted),
 ]
