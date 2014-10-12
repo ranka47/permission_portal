@@ -1,7 +1,15 @@
 from Permission import models
+from django.contrib.auth.models import User, Group, Permission
+from django.utils import timezone
 from django.forms import ModelForm
 
 class TaskForm(ModelForm):
-	class Meta:
-		model = Task
-		fields = ['user_name', 'user_department', 'user_designation', 'task_from_date', 'task_to_date', 'task_purpose', 'task_facilities',]
+    """
+    TaskForm genrated form from models. Refer to ModelForms in djangoproject.com
+    """
+    class Meta:
+        model = models.Task
+        fields = ('user_name', 'user_department', 'user_designation', 'from_date', 'to_date', 'purpose', 'facilities_required')
+
+
+
