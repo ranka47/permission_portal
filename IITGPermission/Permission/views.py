@@ -20,14 +20,11 @@ def login(request):
     """
     c = {}
     c.update(csrf(request))
-    return render_to_response('Permission/login.html', c)
-
-
-def invalid_login(request):
-    """
-    displays 'invalid login' page if user enters wrong details
-    """
-    return render_to_response('Permission/invalid_login.html')
+    if request.method=='POST':
+        
+        return render_to_response('Permission/login.html', {'form_errors': form_errors})
+    else:
+        return render_to_response('Permission/login.html', c)
 
 
 @login_required(login_url="/Permission")
@@ -54,9 +51,9 @@ def auth_view(request):
 
     else:
         # Return an 'invalid login' error message.
-        return HttpResponseRedirect('/Permission/invalid')
+        return HttpResponseRedirect('/Permission/')
 
-
+        
 #------------------------------------------------------------
 #       User's dashboard
 #------------------------------------------------------------
