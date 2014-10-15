@@ -20,8 +20,7 @@ def login(request):
     """
     c = {}
     c.update(csrf(request))
-    if request.method=='POST':
-        
+    if request.method == 'POST':
         return render_to_response('Permission/login.html', {'form_errors': form_errors})
     else:
         return render_to_response('Permission/login.html', c)
@@ -33,7 +32,7 @@ def logout(request):
     logs out user, only if he is already logged in.
     """
     auth.logout(request)
-    return render_to_response('Permission/logout.html')
+    return render_to_response('Permission/login.html')
 
 
 def auth_view(request):
@@ -53,7 +52,13 @@ def auth_view(request):
         # Return an 'invalid login' error message.
         return HttpResponseRedirect('/Permission/')
 
-        
+
+# def submitted(request):
+    """
+    Confirmation after adding Task
+    """
+
+
 #------------------------------------------------------------
 #       User's dashboard
 #------------------------------------------------------------
@@ -76,7 +81,14 @@ def new_permission(request):
         form = forms.TaskForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/Permission/home")
+            form.fields['user_name'].widget.attrs['readonly']=True
+            form.fields['user_department'].widget.attrs['readonly']=True
+            form.fields['user_designation'].widget.attrs['readonly']=True
+            form.fields['from_date'].widget.attrs['readonly']=True
+            form.fields['to_date'].widget.attrs['readonly']=True
+            form.fields['purpose'].widget.attrs['readonly']=True
+            form.fields['facilities_required'].widget.attrs['readonly']=True
+            return render_to_response("Permission/submitted.html", {'form':form},)
     else: 
         form = forms.TaskForm()
 

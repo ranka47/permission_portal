@@ -1,4 +1,11 @@
-<h2>Your Permission has been recorded.</h2>
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="page-header">Task Submitted !</h1>
+	<table>
+		{{form}}
+	</table>
 <p><a href="/Permission/">Home</a></p>
 <p><a href="/Permission/logout/">Logout</a></p>
 
+{% endblock %}
