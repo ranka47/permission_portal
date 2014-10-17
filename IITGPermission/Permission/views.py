@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
 from Permission import forms
+from Permission.models import Task
 
 
 #------------------------------------------------------------
@@ -68,8 +69,9 @@ def home(request):
     """
     displays home page for user
     """
+    task_list=Task.objects.all()
     return render_to_response('Permission/home.html',
-                            {'full_name': request.user.username})
+                            {'full_name': request.user.username,'tasks':task_list})
 
 
 @login_required(login_url="/Permission/")

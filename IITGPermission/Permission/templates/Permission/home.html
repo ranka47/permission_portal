@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 {% block main %}
 <h1 class="page-header">Howdy, {{ full_name }}!</h1>
-<p> You have no previous permissions.</p>
 <p> For a registering a new permission, click on 'New Permission' on the left</p>
+<table>
+{%if tasks %}
+<table>
+	<ul>
+    {%for task in tasks %}
+    	{% if task.user_name == full_name %}
+        	<li>{{ task.purpose }}</li>
+    	{% endif %}
+    {%endfor %}
+    </ul>
+</table>
+{%else %}
+    <p> You have no previous permissions.</p>
+{%endif %}
+</table>
+
 {% endblock %}
