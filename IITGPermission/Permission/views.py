@@ -33,7 +33,7 @@ def logout(request):
     logs out user, only if he is already logged in.
     """
     auth.logout(request)
-    return render_to_response('Permission/login.html')
+    return HttpResponseRedirect('/Permission/')
 
 
 def auth_view(request):
