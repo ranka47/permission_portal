@@ -9,7 +9,7 @@ class TaskForm(ModelForm):
     """
     class Meta:
         model = models.Task
-        fields = ('user_name', 'user_department', 'user_designation', 'from_date', 'to_date', 'purpose', 'facilities_required')
+        fields = ('user_department', 'user_designation', 'from_date', 'to_date', 'purpose', 'facilities_required')
 
 
 

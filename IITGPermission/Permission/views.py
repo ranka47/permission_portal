@@ -82,8 +82,9 @@ def new_permission(request):
     if request.method == 'POST':
         form = forms.TaskForm(request.POST)
         if form.is_valid():
-            form.save()
-            form.fields['user_name'].widget.attrs['readonly']=True
+            task = form.save(commit=False)
+            task.user_name = request.user.username
+            task.save()
             form.fields['user_department'].widget.attrs['readonly']=True
             form.fields['user_designation'].widget.attrs['readonly']=True
             form.fields['from_date'].widget.attrs['readonly']=True
