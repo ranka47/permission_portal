@@ -8,7 +8,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
 from Permission import forms
-from Permission.models import Task
+from Permission.models import Task, Template
 
 
 #------------------------------------------------------------
@@ -83,6 +83,9 @@ def new_permission(request):
         form = forms.TaskForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
+            # template=task.template_id.hierarchies.all()[3]
+            # template=task.template_id.hierarchies.all()
+            # task.current_group=template
             task.user_name = request.user.username
             task.save()
             form.fields['user_department'].widget.attrs['readonly']=True

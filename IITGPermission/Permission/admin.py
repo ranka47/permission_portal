@@ -27,7 +27,8 @@ class TemplateAdmin(admin.ModelAdmin):
     exclude = ('hierarchies',)
 
 
-	
+class TaskAdmin(admin.ModelAdmin):
+    readonly_fields = ('user_name',)
 # admin.site.register(Group, GroupAdmin)
 admin.site.register(Template, TemplateAdmin)
-admin.site.register(Task)
+admin.site.register(Task,TaskAdmin)

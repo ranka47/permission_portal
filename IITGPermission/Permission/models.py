@@ -28,6 +28,6 @@ class Task(models.Model):
     to_date = models.DateTimeField()
     purpose = models.TextField()
     facilities_required = models.TextField()
-    
+    current_group=models.ForeignKey(Group)
     def __str__(self):
         return self.user_name
