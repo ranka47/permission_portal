@@ -28,8 +28,6 @@ class Task(models.Model):
     to_date = models.DateTimeField()
     purpose = models.TextField()
     facilities_required = models.TextField()
-    def userdefault(self,request):
-        myfield = self._meta.get_field_by_name('user_id')
-        myfield.default=request.user.username
+    
     def __str__(self):
         return self.user_name
