@@ -72,7 +72,11 @@ def home(request):
     """
     task_list=Task.objects.all()
     return render_to_response('Permission/home.html',
+<<<<<<< HEAD
                             {'full_name': request.user,'tasks':task_list})
+=======
+                            {'full_name': request.user.username,'tasks':task_list}, context_instance=RequestContext(request))
+>>>>>>> c1f3e8a1a57b5af20b3ed4a231223db59670d421
 
 
 @login_required(login_url="/Permission/")

@@ -11,7 +11,7 @@
     <title>Permission Portal</title>
 
     <!-- Bootstrap core CSS -->
-	{% load staticfiles %}
+    {% load staticfiles %}
     <link href= "{% static 'Permission/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template -->
@@ -43,7 +43,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-			<!-- Add elements to be shown to right of navbar -->
+            <!-- Add elements to be shown to right of navbar -->
           </ul>
         </div>
       </div>
@@ -54,13 +54,16 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="/Permission/home/">Home</a></li>
+            {% if user.is_staff %}
+                <li><a href="/Permission/new/">Pending Permissions</a></li>
+            {% endif %}
             <li><a href="/Permission/new/">New Permission</a></li>
             <li><a href="/Permission/logout/">Logout</a></li>
           </ul>
-		</div>
+        </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-	{% block main %}{% endblock %}
+    {% block main %}{% endblock %}
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -68,11 +71,11 @@
     <script src="{% static 'Permission/js/jquery.js"></script>
     <script src="{% static 'Permission/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'Permission/js/docs.min.js' %}"></script>
-	<script>
-		$(document).ready(function () {
-			$('.dropdown-toggle').dropdown();
-		});
-	</script>
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'Permission/assets/js/ie10-viewport-bug-workaround.js' %}"></script>
   </body>

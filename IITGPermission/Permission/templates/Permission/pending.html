@@ -1,0 +1,25 @@
+<!-- Shows pending Permission -->
+
+{% extends "base.html" %}
+{% block main %}
+<h1 class="page-header">Howdy, {{ full_name.username }}!</h1>
+<table>
+{%if tasks %}
+<table >
+	
+    {%for task in tasks %}
+    <tr>
+      {%for group in full_name.groups.all() %}
+    	{% task.current_group == group%}
+        	<td>{{ task.purpose }}</td>
+        	<td>{{ task.user_name}}</td>
+     	{% endif %}
+    {%endfor %}
+  	</tr>  
+</table>
+{%else %}
+    <p> You have no previous permissions.</p>
+{%endif %}
+</table>
+
+{% endblock %}
