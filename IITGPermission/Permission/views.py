@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 from Permission import forms
 from Permission.models import Task, Template
+from django.contrib.auth.models import Group
 
 
 #------------------------------------------------------------
@@ -71,7 +72,7 @@ def home(request):
     """
     task_list=Task.objects.all()
     return render_to_response('Permission/home.html',
-                            {'full_name': request.user.username,'tasks':task_list})
+                            {'full_name': request.user,'tasks':task_list})
 
 
 @login_required(login_url="/Permission/")
@@ -83,18 +84,23 @@ def new_permission(request):
         form = forms.TaskForm(request.POST)
         if form.is_valid():
             task = form.save(commit=False)
-            # template=task.template_id.hierarchies.all()[3]
-            # template=task.template_id.hierarchies.all()
-            # task.current_group=template
+            text=task.template_id.hierarchy_1
+            """ For giving the Task the current_group as the first hierarchy """
+            for group in Group.objects.all():
+                if group.name==text:
+                    task.current_group=group
+
+
             task.user_name = request.user.username
             task.save()
+            
             form.fields['user_department'].widget.attrs['readonly']=True
             form.fields['user_designation'].widget.attrs['readonly']=True
             form.fields['from_date'].widget.attrs['readonly']=True
             form.fields['to_date'].widget.attrs['readonly']=True
             form.fields['purpose'].widget.attrs['readonly']=True
             form.fields['facilities_required'].widget.attrs['readonly']=True
-            return render_to_response("Permission/submitted.html", {'form':form},)
+            return render_to_response("Permission/submitted.html", {'form':form, 'task':task,},)
     else: 
         form = forms.TaskForm()
 

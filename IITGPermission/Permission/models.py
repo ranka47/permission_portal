@@ -2,8 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, Group, Permission
 from django.utils import timezone
 from django.forms import ModelForm
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext
+
 import datetime
 
 
@@ -11,10 +10,13 @@ import datetime
 class Template(models.Model):
     name = models.CharField(max_length=128)
     description=models.TextField(default=" ")
-    hierarchies = models.ManyToManyField(Group,  related_name='groups')
+    hierarchy_1=models.CharField(blank=True, max_length=32)
+    hierarchy_2=models.CharField(blank=True, max_length=32)
+    hierarchy_3=models.CharField(blank=True, max_length=32)
+    hierarchy_4=models.CharField(blank=True, max_length=32)
+    hierarchy_5=models.CharField(blank=True, max_length=32)
     def __str__(self):
         return self.name
-
 class Task(models.Model):
     """
     Task (Permission) database
@@ -29,5 +31,6 @@ class Task(models.Model):
     purpose = models.TextField()
     facilities_required = models.TextField()
     current_group=models.ForeignKey(Group)
+
     def __str__(self):
         return self.user_name

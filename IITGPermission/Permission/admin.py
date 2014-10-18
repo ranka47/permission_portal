@@ -3,9 +3,9 @@ from Permission.models import Template, Group, Task
 
 # Registering models into admin panel
 # admin.site.register(models.Task)
-class MembershipInline(admin.StackedInline):
-    model = Template.hierarchies.through
-    extra = 3
+# class MembershipInline(admin.StackedInline):
+#     model = Template.hierarchies.through
+#     extra = 3
 
 
 # class GroupAdmin(admin.ModelAdmin):
@@ -14,21 +14,10 @@ class MembershipInline(admin.StackedInline):
 #     # ]
 #     pass
 
-class TemplateAdmin(admin.ModelAdmin):
-    
-    inlines = [
-        MembershipInline,
-    ]
-
-    fieldsets = [
-    			(None,	{'fields':['name','description']}),
-
-    ]
-    exclude = ('hierarchies',)
 
 
 class TaskAdmin(admin.ModelAdmin):
     readonly_fields = ('user_name',)
 # admin.site.register(Group, GroupAdmin)
-admin.site.register(Template, TemplateAdmin)
+admin.site.register(Template)
 admin.site.register(Task,TaskAdmin)

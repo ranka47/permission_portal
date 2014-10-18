@@ -5,8 +5,10 @@
 <h1 class="page-header">New Permission</h1>
 <form action="/Permission/submitted/" method="post">
 	{% csrf_token %}
-	<table>
+	<table style="width:100%;">
+		
 		{{ form }}
+		
 	</table>
 	<button type="submit">Submit</button>
 </form>
