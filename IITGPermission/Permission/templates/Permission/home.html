@@ -2,13 +2,13 @@
 {% block main %}
 <h1 class="page-header">Howdy, {{ full_name }}!</h1>
 {% if user_has_tasks %}
+<p>Here are all previous permissions you've booked.</p>
 <table class="table table-striped">
     <thead><th>Permission Type</th><th>Purpose</th></thead>
     <tfoot>
     {%for task in tasks %}
-    
     <tr>
-        {% if task.user_name == full_name %}
+        {% if task.user_name == username %}
             <td>{{ task.template_id }}</td>
             <td>{{ task.purpose}}</td>
             <!-- <td>status</td> -->

@@ -79,8 +79,10 @@ def home(request):
     """
     task_list=Task.objects.all()
     # if no previous tasks return message instead of table
+    full_name = request.user.username
     return render_to_response('Permission/home.html',
-                            {'full_name': request.user.username,
+                            {'full_name': full_name.capitalize(),
+                            'username':request.user.username,
                             'tasks':task_list,
                             'user_has_tasks':user_has_tasks(request.user.username, task_list)},
                             context_instance=RequestContext(request))
