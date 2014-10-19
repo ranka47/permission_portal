@@ -22,10 +22,10 @@ class TaskFormSubmitted(ModelForm):
 	"""
 	
 
-class TemplateForm(ModelForm):
-	class Meta:
-		model = models.Template
-		fields = ('name','description','hierarchy_1','hierarchy_2','hierarchy_3','hierarchy_4','hierarchy_5')
+# class TemplateForm(ModelForm):
+# 	class Meta:
+# 		model = models.Template
+# 		fields = ('name','description','hierarchy_1','hierarchy_2','hierarchy_3','hierarchy_4','hierarchy_5')
 
 
 

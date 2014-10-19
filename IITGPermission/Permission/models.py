@@ -6,22 +6,17 @@ from django.forms import ModelForm
 import datetime
 
 
-
 class Template(models.Model):
     name = models.CharField(max_length=128)
     description=models.TextField(default=" ")
-    hierarchy_1=models.CharField(blank=True, max_length=32)
-    hierarchy_2=models.CharField(blank=True, max_length=32)
-    hierarchy_3=models.CharField(blank=True, max_length=32)
-    hierarchy_4=models.CharField(blank=True, max_length=32)
-    hierarchy_5=models.CharField(blank=True, max_length=32)
+    groups = models.ManyToManyField(Group, through='TemplateGroup')
     def __str__(self):
         return self.name
+
 class Task(models.Model):
     """
     Task (Permission) database
     """
-    
     template_id=models.ForeignKey(Template)
     user_name = models.CharField(max_length=100)
     user_department = models.CharField(max_length=100)
@@ -34,3 +29,11 @@ class Task(models.Model):
 
     def __str__(self):
         return self.user_name
+
+class TemplateGroup(models.Model):
+    template = models.ForeignKey(Template)
+    group = models.ForeignKey(Group)
+    number = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ('number',)
