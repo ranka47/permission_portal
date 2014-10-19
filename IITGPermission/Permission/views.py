@@ -95,14 +95,9 @@ def new_permission(request):
     if request.method == 'POST':
         form = forms.TaskForm(request.POST)
         if form.is_valid():
+            
             task = form.save(commit=False)
-            text=task.template_id.hierarchy_1
-            """ For giving the Task the current_group as the first hierarchy """
-            for group in Group.objects.all():
-                if group.name==text:
-                    task.current_group=group
-
-
+            task.current_group=task.template_id.templategroup_set.get(number=1).group
             task.user_name = request.user.username
             task.save()
             
