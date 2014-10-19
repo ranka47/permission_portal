@@ -9,5 +9,8 @@ urlpatterns = [
 		url('home/$', views.home),
 		url('invalid/$', views.login),
 		url('new/$', views.new_permission),
-		url('submitted/$', views.new_permission),
+        url('done/$', views.done_permission),
+        url('template/new/$', views.new_template),
+        url('template/existing/$', views.existing_template),
+        url('submitted/$', views.new_permission),
 ]

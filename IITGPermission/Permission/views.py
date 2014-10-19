@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import auth
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from Permission import forms
 from Permission.models import Task, Template
@@ -104,3 +105,22 @@ def new_permission(request):
         form = forms.TaskForm()
 
     return render_to_response("Permission/new_permission.html", {'form':form}, context_instance=RequestContext(request))
+
+@login_required(login_url="/Permission/")
+@staff_member_required
+def done_permission(request):
+    return HttpResponse('done_permission')
+    pass
+    
+@login_required(login_url="/Permission/")
+@staff_member_required
+def new_template(request):
+    return HttpResponse('done_permission')
+    pass
+    
+@login_required(login_url="/Permission/")
+@staff_member_required
+def existing_template(request):
+    return HttpResponse('done_permission')
+    pass
+    
