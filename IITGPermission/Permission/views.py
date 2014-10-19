@@ -66,14 +66,24 @@ def auth_view(request):
 #       User's dashboard
 #------------------------------------------------------------
 
+def user_has_tasks(username, tasks):
+    for task in tasks:
+        if task.user_name == username:
+            return True
+    return False
+
 @login_required(login_url="/Permission/")
 def home(request):
     """
-    displays home page for user
+    displays home page for user, with his previous tasks
     """
     task_list=Task.objects.all()
+    # if no previous tasks return message instead of table
     return render_to_response('Permission/home.html',
-                            {'full_name': request.user,'tasks':task_list}, context_instance=RequestContext(request))
+                            {'full_name': request.user.username,
+                            'tasks':task_list,
+                            'user_has_tasks':user_has_tasks(request.user.username, task_list)},
+                            context_instance=RequestContext(request))
 
 @login_required(login_url="/Permission/")
 def new_permission(request):
@@ -109,6 +119,13 @@ def new_permission(request):
 @login_required(login_url="/Permission/")
 @staff_member_required
 def pending_permissions(request):
+    """
+    displays home page for user
+    """
+    task_list=Task.objects.all()
+    return render_to_response('Permission/home.html',
+                            {'full_name': request.user,'tasks':task_list}, context_instance=RequestContext(request))
+
     return HttpResponse('pending_permissions')
     pass
 

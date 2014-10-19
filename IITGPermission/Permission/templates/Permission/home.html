@@ -1,27 +1,25 @@
 {% extends "base.html" %}
 {% block main %}
-<h1 class="page-header">Howdy, {{ full_name.username }}!</h1>
-<p> For a registering a new permission, click on 'New Permission' on the left</p>
-<table>
-{%if tasks %}
+<h1 class="page-header">Howdy, {{ full_name }}!</h1>
+{% if user_has_tasks %}
 <table class="table table-striped">
-	<thead><th>Permission Type</th><th>Purpose</th></thead>
+    <thead><th>Permission Type</th><th>Purpose</th></thead>
     <tfoot>
     {%for task in tasks %}
     
     <tr>
-    	{% if task.user_name == full_name.username %}
-        	<td>{{ task.template_id }}</td>
-        	<td>{{ task.purpose}}</td>
-        	<!-- <td>status</td> -->
-        	<!-- <td><a href to the form read-only></a></td> -->
-     	{% endif %}
+        {% if task.user_name == full_name %}
+            <td>{{ task.template_id }}</td>
+            <td>{{ task.purpose}}</td>
+            <!-- <td>status</td> -->
+            <!-- <td><a href to the form read-only></a></td> -->
+        {% endif %}
     {%endfor %}
-  	</tr></tfoot>  
+    </tr></tfoot>  
 </table>
 {%else %}
-    <p> You have no previous permissions.</p>
+    <p>You have no previous permissions.</p>
+    <p>For booking a new permission, click on 'New Permission' to the left.</p>
 {%endif %}
-</table>
 
 {% endblock %}
