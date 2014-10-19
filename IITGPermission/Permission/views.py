@@ -108,6 +108,12 @@ def new_permission(request):
 
 @login_required(login_url="/Permission/")
 @staff_member_required
+def pending_permissions(request):
+    return HttpResponse('pending_permissions')
+    pass
+
+@login_required(login_url="/Permission/")
+@staff_member_required
 def done_permission(request):
     return HttpResponse('done_permission')
     pass
@@ -115,12 +121,12 @@ def done_permission(request):
 @login_required(login_url="/Permission/")
 @staff_member_required
 def new_template(request):
-    return HttpResponse('done_permission')
+    return HttpResponse('template_new')
     pass
     
 @login_required(login_url="/Permission/")
 @staff_member_required
 def existing_template(request):
-    return HttpResponse('done_permission')
+    return HttpResponse('template_existing')
     pass
     
