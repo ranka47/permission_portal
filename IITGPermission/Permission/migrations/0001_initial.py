@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0003_auto_20141007_2145'),
+        ('auth', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Task',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
                 ('user_name', models.CharField(max_length=100)),
                 ('user_department', models.CharField(max_length=100)),
                 ('user_designation', models.CharField(max_length=100)),
@@ -31,10 +31,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Template',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=128)),
-                ('description', models.TextField(default=b' ')),
-                ('hierarchies', models.ManyToManyField(related_name=b'groups', to='auth.Group')),
+                ('description', models.TextField(default=' ')),
+                ('hierarchy_1', models.CharField(blank=True, max_length=32)),
+                ('hierarchy_2', models.CharField(blank=True, max_length=32)),
+                ('hierarchy_3', models.CharField(blank=True, max_length=32)),
+                ('hierarchy_4', models.CharField(blank=True, max_length=32)),
+                ('hierarchy_5', models.CharField(blank=True, max_length=32)),
             ],
             options={
             },
