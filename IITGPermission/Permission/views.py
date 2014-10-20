@@ -7,6 +7,7 @@ from django.contrib import auth
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import get_object_or_404
 
 from Permission import forms
 from Permission.models import Task, Template
@@ -120,11 +121,11 @@ def pending_permissions(request):
     displays home page for user
     """
     task_list=Task.objects.all()
-    return render_to_response('Permission/home.html',
-                            {'full_name': request.user,'tasks':task_list}, context_instance=RequestContext(request))
+    groups=request.user.groups.all()
+    return render_to_response('Permission/pending.html',
+                            {'full_name': request.user,'groups':groups,'tasks':task_list}, context_instance=RequestContext(request))
 
-    return HttpResponse('pending_permissions')
-    pass
+    
 
 @login_required(login_url="/Permission/")
 @staff_member_required
@@ -143,7 +144,19 @@ def new_template(request):
 def existing_template(request):
     return HttpResponse('template_existing')
     pass
-    
-def detail(request, task_id):
-    return HttpResponse('Hi')
 
+def detail(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    return render_to_response("Permission/detail.html", {'task',task,},)
+
+def accepted(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+
+    return render_to_response("Permission/pending.html", {'task':task,},)
+
+
+def denied(request, task_id):
+    task = get_object_or_404(Task, pk=task_id)
+    task.number=-1
+    task.status="Denied"
+    return render_to_response("Permission/pending.html", {'task':task,},)
