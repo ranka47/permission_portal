@@ -143,7 +143,6 @@ def new_template(request):
 @staff_member_required
 def existing_template(request):
     return HttpResponse('template_existing')
-    pass
 
 def detail(request, task_id):
 
@@ -152,11 +151,20 @@ def detail(request, task_id):
 
 def accepted(request, task_id):
     task = Task.objects.get(id=task_id)
+    task.level=task.level+1
+    
+    count=0
+    for num in task.template_id.templategroup_set.all():
+        if num.number != 0:
+             count=count+1
+    if task.level==count+1:
+        task.status="Accepted"
+    else:
+        task.status="Pending"
+    task.save()
     return render(request, 'Permission/pending.html', {'task':task})
 
-
 def denied(request, task_id):
-
     task = Task.objects.get(id=task_id)
     task.level=-1
     task.status="Denied"
