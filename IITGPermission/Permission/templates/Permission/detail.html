@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block main %}
+<table style="width:100%" class="table">
+    <tr><td><b>Type of Permission</b></td><td>{{task.template_id}}</td></tr>
+    <tr><td><b>Name of the Applicant</b></td><td>{{task.user_name}}</td></tr>
+    <tr><td><b>Department</b></td><td>{{task.user_department}}</td></tr>
+    <tr><td><b>Designation</b></td><td>{{task.user_designation}}</td></tr>
+    <tr><td><b>From Date</b></td><td>{{task.from_date}}</td></tr>
+    <tr><td><b>To Date</td><td>{{task.to_date}}</td></tr>
+    <tr><td><b>Purposes</b></td><td>{{task.purpose}}</td></tr>
+    <tr><td><b>Facilities Required</b></td><td>{{task.facilities_requires}}</td></tr>
+</table>
+        <table style="width:100%">
+        <tr>
+        <form action="/Permission/{{task.id}}/accepted/"><td><button type="submit">ACCEPTED</button></td></form>
+        <form action="/Permission/{{task.id}}/denied"><td><button type="submit">DENIED</button></td></form>
+        </table>
+    <hr>
+<p><a href="/Permission/home">Home</a></p>
+<p><a href="/Permission/logout/">Logout</a></p>
+
+{% endblock %}

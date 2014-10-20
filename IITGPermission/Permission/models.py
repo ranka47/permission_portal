@@ -26,7 +26,7 @@ class Task(models.Model):
     purpose = models.TextField()
     facilities_required = models.TextField()
     current_group=models.ForeignKey(Group)
-    level=models.PositiveSmallIntegerField(default=0)
+    level=models.IntegerField(default=0)
     status=models.CharField(max_length=32)
 
     def __str__(self):

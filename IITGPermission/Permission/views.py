@@ -158,7 +158,7 @@ def accepted(request, task_id):
 def denied(request, task_id):
 
     task = Task.objects.get(id=task_id)
-    task.level=100
+    task.level=-1
     task.status="Denied"
     task.save()
     return render_to_response("Permission/pending.html", {'task':task,},)
