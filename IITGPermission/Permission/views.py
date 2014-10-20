@@ -146,17 +146,20 @@ def existing_template(request):
     pass
 
 def detail(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-    return render_to_response("Permission/detail.html", {'task',task,},)
+
+    task = Task.objects.get(id=task_id)
+    return render(request, 'Permission/detail.html', {'task':task})
 
 def accepted(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-
-    return render_to_response("Permission/pending.html", {'task':task,},)
+    task = Task.objects.get(id=task_id)
+    return render(request, 'Permission/pending.html', {'task':task})
 
 
 def denied(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-    task.number=-1
+
+    task = Task.objects.get(id=task_id)
+    task.level=100
     task.status="Denied"
+    task.save()
     return render_to_response("Permission/pending.html", {'task':task,},)
+    
