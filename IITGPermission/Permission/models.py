@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User, Group, Permission
 from django.utils import timezone
 from django.forms import ModelForm
-
 import datetime
 
 
@@ -25,7 +24,7 @@ class Task(models.Model):
     to_date = models.DateTimeField()
     purpose = models.TextField()
     facilities_required = models.TextField()
-    current_group=models.ForeignKey(Group)
+    current_group=models.ForeignKey(Group, null=True)
     level=models.IntegerField(default=0)
     status=models.CharField(max_length=32)
 

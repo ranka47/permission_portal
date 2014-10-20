@@ -159,15 +159,24 @@ def accepted(request, task_id):
              count=count+1
     if task.level==count+1:
         task.status="Accepted"
+        task.current_group=None
     else:
         task.status="Pending"
+        task.current_group=task.template_id.templategroup_set.get(number=task.level).group
     task.save()
-    return render(request, 'Permission/pending.html', {'task':task})
+    task_list=Task.objects.all()
+    groups=request.user.groups.all()
+    return render_to_response('Permission/pending.html',
+                            {'full_name': request.user,'groups':groups,'tasks':task_list}, context_instance=RequestContext(request))
 
 def denied(request, task_id):
     task = Task.objects.get(id=task_id)
     task.level=-1
+    task.current_group=None
     task.status="Denied"
     task.save()
-    return render_to_response("Permission/pending.html", {'task':task,},)
+    task_list=Task.objects.all()
+    groups=request.user.groups.all()
+    return render_to_response('Permission/pending.html',
+                            {'full_name': request.user,'groups':groups,'tasks':task_list}, context_instance=RequestContext(request))
     
