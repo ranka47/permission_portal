@@ -3,8 +3,6 @@
 {% extends "base.html" %}
 {% block main %}
 <h1 class="page-header">Howdy, {{ full_name.username }}!</h1>
-<table >
-{%if tasks %}
 <table class="table table-striped">
 	
     {%for task in tasks %}
@@ -13,16 +11,13 @@
     	{% if task.current_group == group %}
         	<td>{{ task.purpose }}</td>
         	<td>{{ task.user_name}}</td>
-          <td>
+          <td>{{task.status}}</td>
           <td><a href="/Permission/{{ task.id }}/">{{ task.purpose }}</a></td>
      	{% endif %}
     {%endfor %}
     {%endfor %}
   	</tr>  
 </table>
-{%else %}
-    <p> You have no previous permissions.</p>
-{%endif %}
-</table>
+<p><b>You have no more pending previous permissions.</b></p>
 
 {% endblock %}
