@@ -26,14 +26,17 @@ class Task(models.Model):
     purpose = models.TextField()
     facilities_required = models.TextField()
     current_group=models.ForeignKey(Group)
+    level=models.PositiveSmallIntegerField(default=0)
+    status=models.CharField(max_length=32)
 
     def __str__(self):
         return self.user_name
 
+
 class TemplateGroup(models.Model):
     template = models.ForeignKey(Template)
     group = models.ForeignKey(Group)
-    number = models.PositiveIntegerField()
+    number = models.PositiveSmallIntegerField()
 
     class Meta:
         ordering = ('number',)

@@ -6,80 +6,15 @@
     <table style="width:100%;vertical-align:middle;">
         {{form}}
     </table>
-
-    <form action="">
-
-        {% if task.template_id.hierarchy_1 != NULL %} 
-        <fieldset>
-            <legend align="right">{{task.template_id.hierarchy_1}}</legend>
-            <table class="table">
-            <tr>
-                <td><input type="radio" name="Hierarchy1">Permitted</td>
-                <td><input type="radio" name="Hierarchy1">Denied</td>
-                <td>Comment: <input type="text" name="Hierarchy1"></td>
-            </tr>
-            </table>
-        </fieldset>
-        {% endif %}
-
-        {% if task.template_id.hierarchy_2 != '' %}
-        <fieldset>
-            <legend align="right">{{task.template_id.hierarchy_2}}</legend>
-            <table class="table">
-                <tr>
-                    <td><input type="radio" name="Hierarchy2">Permitted</td>
-                    <td><input type="radio" name="Hierarchy2">Denied</td>
-                    <td>Comment: <input type="text" name="Hierarchy2"></td>
-                </tr>
-            </table>
-        </fieldset>
-        {% endif %}
-
-        {% if task.template_id.hierarchy_3 != '' %}
-        <fieldset>
-            <legend align="right">{{task.template_id.hierarchy_3}}</legend>
-            <table class="table">
-                <tr>
-                    <td><input type="radio" name="Hierarchy3">Permitted</td>
-                    <td><input type="radio" name="Hierarchy3">Denied</td>
-                    <td>Comment: <input type="text" name="Hierarchy3"></td>
-                </tr>
-            </table>
-        </fieldset>
-        {% endif %}
-
-        {% if task.template_id.hierarchy_4 != '' %}
-        <fieldset>
-            <legend align="right">{{task.template_id.hierarchy_4}}</legend>
-            <table class="table">
-                <tr>
-                    <td><input type="radio" name="Hierarchy4">Permitted</td>
-                    <td><input type="radio" name="Hierarchy4">Denied</td>
-                    <td>Comment: <input type="text" name="Hierarchy4"></td>
-                </tr>
-            </table>
-        </fieldset>
-        {% endif %}
-         
-        {% if task.template_id.hierarchy_5 != '' %}
-        <fieldset>
-            <legend align="right">{{task.template_id.hierarchy_5}}</legend>
-            <table class="table">
-                <tr>
-                    <td><input type="radio" name="Hierarchy5">Permitted</td>
-                    <td><input type="radio" name="Hierarchy5">Denied</td>
-                    <td>Comment: <input type="text" name="Hierarchy"></td>
-                </tr>
-            </table>
-        </fieldset>
-        {% endif %}
-     
-    </form>
-     
     <hr>
-    <button type="submit">Submit</button>
-    </hr>
-
+    <form>
+        <table style="width:100%">
+        <tr>
+        <td><button type="submit">ACCEPTED</button></td>
+        <td><button type="submit">DENIED</button></td>
+        </table>
+    </form>
+    <hr>
 <p><a href="/Permission/home">Home</a></p>
 <p><a href="/Permission/logout/">Logout</a></p>
 

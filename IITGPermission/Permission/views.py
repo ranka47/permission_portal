@@ -144,3 +144,6 @@ def existing_template(request):
     return HttpResponse('template_existing')
     pass
     
+def detail(request, task_id):
+    return HttpResponse('Hi')
+

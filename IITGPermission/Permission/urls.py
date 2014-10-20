@@ -14,4 +14,5 @@ urlpatterns = [
         url('new-template/$', views.new_template),
         url('existing-template/$', views.existing_template),
         url('submitted/$', views.new_permission),
+        url(r'^(?P<task_id>\d+/$)',views.detail),
 ]
