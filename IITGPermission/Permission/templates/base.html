@@ -53,13 +53,28 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li class="active"><a href="/Permission/home/">Home</a></li>
-            <li><a href="/Permission/new-permission/">New Permission</a></li>
+            <li {% block home %}{% endblock %}>
+                <a href="/Permission/home/">Home</a>
+            </li>
+            <li {% block new-permission %}{% endblock %}>
+                <a href="/Permission/new-permission/">New Permission</a>
+            </li>
+
             {% if user.is_staff %}
-                <li><a href="/Permission/pending-permissions/">Pending Permissions</a></li>
-                <li><a href="/Permission/permissions-done/">Permissions Done</a></li>
-                <li><a href="/Permission/new-template/">New Template</a></li>
-                <li><a href="/Permission/existing-template/">Existing Template</a></li>
+
+            <li {% block pending-permissions %}{% endblock %}>
+                <a href="/Permission/pending-permissions/">Pending Permissions</a>
+            </li>
+            <li {% block permissions-done %}{% endblock %}>
+                <a href="/Permission/permissions-done/">Permissions Done</a>
+            </li>
+            <li {% block new-template %}{% endblock %}>
+                <a href="/Permission/new-template/">New Template</a>
+            </li>
+            <li {% block existing-template %}{% endblock %}>
+                <a href="/Permission/existing-template/">Existing Template</a>
+            </li>
+
             {% endif %}
             <li><a href="/Permission/logout/">Logout</a></li>
           </ul>
