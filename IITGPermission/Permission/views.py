@@ -108,11 +108,19 @@ def new_permission(request):
             form.fields['to_date'].widget.attrs['readonly']=True
             form.fields['purpose'].widget.attrs['readonly']=True
             form.fields['facilities_required'].widget.attrs['readonly']=True
-            return render_to_response("Permission/submitted.html", {'form':form, 'task':task,},)
+            return render_to_response("Permission/submitted.html", {'form':form, 'task':task,}, context_instance=RequestContext(request)    )
     else: 
         form = forms.TaskForm()
 
     return render_to_response("Permission/new_permission.html", {'form':form}, context_instance=RequestContext(request))
+
+
+def group_has_tasks(groups, tasks):
+    for task in tasks:
+        for group in groups:
+            if task.current_group == group:
+                return True
+    return False
 
 @login_required(login_url="/Permission/")
 @staff_member_required
@@ -123,7 +131,11 @@ def pending_permissions(request):
     task_list=Task.objects.all()
     groups=request.user.groups.all()
     return render_to_response('Permission/pending.html',
-                            {'full_name': request.user,'groups':groups,'tasks':task_list}, context_instance=RequestContext(request))
+                            {'full_name': request.user,
+                            'groups':groups,
+                            'tasks':task_list,
+                            'group_has_tasks': group_has_tasks(groups, task_list),},
+                            context_instance=RequestContext(request))
 
     
 
@@ -166,8 +178,7 @@ def accepted(request, task_id):
     task.save()
     task_list=Task.objects.all()
     groups=request.user.groups.all()
-    return render_to_response('Permission/pending.html',
-                            {'full_name': request.user,'groups':groups,'tasks':task_list}, context_instance=RequestContext(request))
+    return HttpResponseRedirect('/Permission/pending-permissions/')
 
 def denied(request, task_id):
     task = Task.objects.get(id=task_id)
@@ -177,6 +188,4 @@ def denied(request, task_id):
     task.save()
     task_list=Task.objects.all()
     groups=request.user.groups.all()
-    return render_to_response('Permission/pending.html',
-                            {'full_name': request.user,'groups':groups,'tasks':task_list}, context_instance=RequestContext(request))
-    
+    return HttpResponseRedirect('/Permission/pending-permissions/')    

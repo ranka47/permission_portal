@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block main %}
-<table style="width:100%" class="table">
+<table class="table table-striped">
     <tr><td><b>Type of Permission</b></td><td>{{task.template_id}}</td></tr>
     <tr><td><b>Name of the Applicant</b></td><td>{{task.user_name}}</td></tr>
     <tr><td><b>Department</b></td><td>{{task.user_department}}</td></tr>
@@ -13,22 +13,24 @@
     <tr><td><b>Status</b></td><td>{{task.status}}</td></tr>
 </table>
 
-<table style="width:100%">
+<table  style="margin:10px">
     <tr>
         <form action="/Permission/{{task.id}}/accepted/">
             <td>
-                <button type="submit">ACCEPTED</button>
+                <button type="submit">Approve</button>
             </td>
         </form>
         <form action="/Permission/{{task.id}}/denied">
             <td>
-                <button type="submit">DENIED</button>
+                <button type="submit">Deny</button>
+            </td>
+        </form>
+        <form action="/Permission/pending-permissions/">
+            <td>
+                <button type="submit">Go Back</button>
             </td>
         </form>
     </tr>
 </table>
-    <hr>
-<p><a href="/Permission/home">Home</a></p>
-<p><a href="/Permission/logout/">Logout</a></p>
 
 {% endblock %}

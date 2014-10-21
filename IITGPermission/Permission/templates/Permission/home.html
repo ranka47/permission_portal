@@ -2,22 +2,25 @@
 {% block home %} class="active" {% endblock %}
 {% block main %}
 <h1 class="page-header">Howdy, {{ full_name }}!</h1>
+
 {% if user_has_tasks %}
-<p>Here are all previous permissions you've booked.</p>
+
+<p>Here are all previous permissions you've booked</p>
 <table class="table table-striped">
-    <thead><th>Permission Type</th><th>Purpose</th></thead>
-    <tfoot>
+    <thead><th>Permission for</th><th>Purpose</th></thead>
+    <tbody>
     {%for task in tasks %}
-    <tr>
-        {% if task.user_name == username  %}
-        	<td>{{task.id}}</td>
-            <td>{{ task.template_id }}</td>
-            <!-- <td>status</td> -->
-            <td><a href="/Permission/{{ task.id }}">{{ task.purpose }}</a></td>
-        {% endif %}
-    {% endfor %}
-    </tr></tfoot>  
+        <tr>
+            {% if task.user_name == username  %}
+                <td>{{ task.template_id }}</td>
+                <!-- <td>status</td> -->
+                <td><a href="/Permission/{{ task.id }}">{{ task.purpose }}</a></td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    </tbody>  
 </table>
+
 {%else %}
     <p>You have no previous permissions.</p>
     <p>For booking a new permission, click on 'New Permission' to the left.</p>
