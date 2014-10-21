@@ -11,12 +11,14 @@
     <tr><td><b>Purposes</b></td><td>{{task.purpose}}</td></tr>
     <tr><td><b>Facilities Required</b></td><td>{{task.facilities_required}}</td></tr>
     <tr><td><b>Status</b></td><td>{{task.status}}</td></tr>
+    <tr><td><b>Comment</b></td><td>{{task.comment}}</td></tr>
+
 </table>
 
 <table  style="margin:10px">
     <tr>
-        <form action="/Permission/{{task.id}}/accepted/"
->            <td>
+        <form action="/Permission/{{task.id}}/accepted/">
+            <td>
                 <button type="submit">Approve</button>
             </td>
         </form>

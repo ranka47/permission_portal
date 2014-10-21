@@ -114,7 +114,7 @@ def new_permission(request):
             form.fields['to_date'].widget.attrs['readonly']=True
             form.fields['purpose'].widget.attrs['readonly']=True
             form.fields['facilities_required'].widget.attrs['readonly']=True
-            return render_to_response("Permission/submitted.html", {'form':form, 'task':task,}, context_instance=RequestContext(request)    )
+            return render_to_response("Permission/submitted.html", {'form':form, 'task':task,}, context_instance=RequestContext(request))
     else: 
         form = forms.TaskForm()
 
@@ -148,8 +148,13 @@ def pending_permissions(request):
 @login_required(login_url="/Permission/")
 @staff_member_required
 def done_permission(request):
-    return HttpResponse('done_permission')
-    pass
+    task_list=Task.objects.all()
+    groups=request.user.groups.all()
+    return render_to_response('Permission/permission_done.html',
+                            {'full_name': request.user,
+                            'groups':groups,
+                            'tasks':task_list,},
+                            context_instance=RequestContext(request))
     
 @login_required(login_url="/Permission/")
 @staff_member_required
@@ -162,36 +167,57 @@ def new_template(request):
 def existing_template(request):
     return HttpResponse('template_existing')
 
+@login_required(login_url="/Permission/")
+@staff_member_required
 def detail(request, task_id):
 
     task = Task.objects.get(id=task_id)
     return render(request, 'Permission/detail.html', {'task':task})
 
+def admin_is_in_current_group(task, groups):
+    for group in groups.all():
+        if task.current_group==group:
+            return True
+        else:
+            return False
+@login_required(login_url="/Permission/")
+@staff_member_required
 def accepted(request, task_id):
     task = Task.objects.get(id=task_id)
-    task.level=task.level+1
-    
-    count=0
-    for num in task.template_id.templategroup_set.all():
-        if num.number != 0:
-             count=count+1
-    if task.level==count+1:
-        task.status="Accepted"
-        task.current_group=None
+    groups = request.user.groups.all()
+    if admin_is_in_current_group(task, groups):
+        task.comment=task.comment+"Approved by: "+request.user.username+"\n"
+        task.level=task.level+1
+        task.done_level=task.done_level+1
+        count=0
+        for num in task.template_id.templategroup_set.all():
+            if num.number != 0:
+                 count=count+1
+        if task.level==count+1:
+            task.status="Accepted"
+            task.current_group=None
+        else:
+            task.status="Pending"
+            task.current_group=task.template_id.templategroup_set.get(number=task.level).group
+        task.save()
+        task_list=Task.objects.all()
+        groups=request.user.groups.all()
+        return HttpResponseRedirect('/Permission/pending-permissions/')
     else:
-        task.status="Pending"
-        task.current_group=task.template_id.templategroup_set.get(number=task.level).group
-    task.save()
-    task_list=Task.objects.all()
-    groups=request.user.groups.all()
-    return HttpResponseRedirect('/Permission/pending-permissions/')
+        return HttpResponseRedirect('/Permission/pending-permissions/')
 
+@login_required(login_url="/Permission/")
+@staff_member_required
 def denied(request, task_id):
     task = Task.objects.get(id=task_id)
-    task.level=-1
-    task.current_group=None
-    task.status="Denied"
-    task.save()
-    task_list=Task.objects.all()
-    groups=request.user.groups.all()
-    return HttpResponseRedirect('/Permission/pending-permissions/')    
+    groups = request.user.groups.all()
+    if admin_is_in_current_group(task, groups):
+        task.level=-1
+        task.current_group=None
+        task.status="Denied"
+        task.save()
+        task_list=Task.objects.all()
+        groups=request.user.groups.all()
+        return HttpResponseRedirect('/Permission/pending-permissions/')    
+    else:
+        return HttpResponseRedirect('/Permission/pending-permissions/')    
