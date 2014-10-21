@@ -25,8 +25,8 @@ class Task(models.Model):
     purpose = models.TextField()
     facilities_required = models.TextField()
     current_group=models.ForeignKey(Group, null=True)
-    level=models.IntegerField(default=0)
-    status=models.CharField(max_length=32)
+    level=models.IntegerField(default=1)
+    status=models.CharField(max_length=32, default="Pending")
 
     def __str__(self):
         return self.user_name
