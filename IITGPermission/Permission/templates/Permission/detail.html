@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% block pending-permissions %} class="active" {% endblock %}
 {% block main %}
 <table class="table table-striped">
     <tr><td><b>Type of Permission</b></td><td>{{task.template_id}}</td></tr>
@@ -15,8 +15,8 @@
 
 <table  style="margin:10px">
     <tr>
-        <form action="/Permission/{{task.id}}/accepted/">
-            <td>
+        <form action="/Permission/{{task.id}}/accepted/"
+>            <td>
                 <button type="submit">Approve</button>
             </td>
         </form>

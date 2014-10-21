@@ -88,6 +88,12 @@ def home(request):
                             'user_has_tasks':user_has_tasks(request.user.username, task_list)},
                             context_instance=RequestContext(request))
 
+
+def user_detail(request, task_id):
+
+    task = Task.objects.get(id=task_id)
+    return render(request, 'Permission/user_detail.html', {'task':task})
+
 @login_required(login_url="/Permission/")
 def new_permission(request):
     """
