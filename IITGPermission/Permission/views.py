@@ -88,9 +88,13 @@ def home(request):
                             'user_has_tasks':user_has_tasks(request.user.username, task_list)},
                             context_instance=RequestContext(request))
 
+@login_required(login_url="/Permission/")
+def delete(request,task_id):
+    task = Task.objects.get(id=task_id)
+    task.delete()
+    return HttpResponseRedirect("/Permission/home/")
 
 def user_detail(request, task_id):
-
     task = Task.objects.get(id=task_id)
     return render(request, 'Permission/user_detail.html', {'task':task})
 
@@ -119,7 +123,6 @@ def new_permission(request):
         form = forms.TaskForm()
 
     return render_to_response("Permission/new_permission.html", {'form':form}, context_instance=RequestContext(request))
-
 
 def group_has_tasks(groups, tasks):
     for task in tasks:
@@ -159,8 +162,18 @@ def done_permission(request):
 @login_required(login_url="/Permission/")
 @staff_member_required
 def new_template(request):
-    return HttpResponse('template_new')
-    pass
+    """
+    displays new permission form for the user and processes it
+    """
+    # if request.method == 'POST':
+    #     form = forms.TemplateForm(request.POST)
+    #     if form.is_valid():
+    #         form.save()            
+    #         return render_to_response("Permission/template_submitted.html", {'form':form,}, context_instance=RequestContext(request))
+    # else: 
+    # form = forms.TemplateForm()
+
+    return HttpResponseRedirect("/admin/Permission/template/add/")
     
 @login_required(login_url="/Permission/")
 @staff_member_required

@@ -20,4 +20,6 @@ urlpatterns = [
         url('submitted/$', views.new_permission),
         url(r'^(?P<task_id>\d+)/accepted/$',views.accepted),
         url(r'^(?P<task_id>\d+)/denied/$',views.denied),
+        url(r'^(?P<task_id>\d+)/delete/$',views.delete),
+        
 ]

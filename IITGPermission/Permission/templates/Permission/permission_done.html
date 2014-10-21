@@ -1,26 +1,26 @@
 <!-- Shows Permissions on which decisions had been made -->
 {% extends "base.html" %}
-{% block pending-permissions %} class="active" {% endblock %}
+{% block permissions-done %} class="active" {% endblock %}
 {% block main %}
 <h1 class="page-header">Permissions Decided Upon</h1>
 <table class="table table-striped">
-<thead>
-        <th>Permission for</th>
-        <th>Applicant name</th>
-        <th>Purpose</th>
-    </thead>
-    <tbody>
-        {% for task in tasks %}
-            {% if full_name.username in task.comment %}
-                <tr>
-                    <td>{{ task.template_id }}</td>
-                    <td><a href="/Permission/{{ task.id }}/pending/">{{ task.purpose }}</a></td>
-                    <td>{{ task.user_name}}</td>
-                    <td>{{ task.status }}</td>
-                </tr>  
+  <thead>
+          <th>Permission for</th>
+          <th>Applicant name</th>
+          <th>Purpose</th>
+  </thead>
+  <tbody>
+      {% for task in tasks %}
+         {% if full_name.username in task.comment %}
+              <tr>
+                  <td>{{ task.template_id }}</td>
+                  <td><a href="/Permission/{{ task.id }}/pending/">{{ task.purpose }}</a></td>
+                  <td>{{ task.user_name}}</td>
+                  <td>{{ task.status }}</td>
+              </tr>  
             {% endif %}
         {% endfor %}
-    </tbody>
+<tbody>
             
 </table>
 

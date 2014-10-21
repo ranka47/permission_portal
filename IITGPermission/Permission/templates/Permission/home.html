@@ -20,7 +20,17 @@
                 <td>{{ task.template_id }}</td>
                 <td>{{task.status}}</td>
                 <td><a href="/Permission/{{ task.id }}">{{ task.purpose }}</a></td>
-                <!-- <delete option> -->
+                <td>
+                    <form action="/Permission/{{task.id}}/delete/">
+                        <script type="text/javascript"> 
+                            function confirmDelete()
+                             {  
+                                return confirm("Are you sure you want to delete?");   
+                            } 
+                        </script> 
+                        <button type="submit" onclick="confirmDelete()">Delete</button>
+                    </form>
+                </td>
             {% endif %}
         {% endfor %}
     </tr>
