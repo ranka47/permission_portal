@@ -189,6 +189,9 @@ def accepted(request, task_id):
         task.comment=task.comment+"Approved by: "+request.user.username+"\n"
         task.level=task.level+1
         task.done_level=task.done_level+1
+
+        """Count is there to take the max value of number"""
+        
         count=0
         for num in task.template_id.templategroup_set.all():
             if num.number != 0:
