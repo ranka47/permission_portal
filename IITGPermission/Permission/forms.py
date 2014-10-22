@@ -3,12 +3,16 @@ from django.contrib.auth.models import User, Group, Permission
 from django.utils import timezone
 from django.forms import ModelForm
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
+
 
 class TaskForm(ModelForm):
     """
     TaskForm genrated form from models. Refer to ModelForms in djangoproject.com
     """
     # current_group = forms.ModelChoiceField(queryset=Group.objects.all(), required=False)
+    to_date = forms.DateTimeField(widget=SelectDateWidget)
+    from_date = forms.DateTimeField(widget=SelectDateWidget)
 
     class Meta:
         model = models.Task

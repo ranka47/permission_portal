@@ -8,7 +8,6 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404
-
 from Permission import forms
 from Permission.models import Task, Template
 from django.contrib.auth.models import Group
@@ -36,7 +35,7 @@ def logout(request):
     logs out user, only if he is already logged in.
     """
     auth.logout(request)
-    return HttpResponseRedirect('/Permission/')
+    return render_to_response('Permission/logout.html')
 
 
 def auth_view(request):
