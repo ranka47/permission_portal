@@ -198,9 +198,8 @@ def accepted(request, task_id):
     task = Task.objects.get(id=task_id)
     groups = request.user.groups.all()
     if admin_is_in_current_group(task, groups):
-        task.comment=task.comment+"\n"+"Approved by: "+str(request.user.username)+" ("+str(request.user.groups.all())[9:-2]+")"
+        task.approved_or_denied_by=task.approved_or_denied_by+"\n"+"Approved by: "+str(request.user.username)
         task.level=task.level+1
-        task.done_level=task.done_level+1
 
         """Count is there to take the max value of number"""
         
@@ -230,7 +229,7 @@ def denied(request, task_id):
         task.level=-1
         task.current_group=None
         task.status="Denied"
-        task.comment=task.comment+"\n"+"Denied by: "+str(request.user.groups.all())
+        task.approved_or_denied_by=task.approved_or_denied_by+"\n"+"Denied by: "+str(request.user.groups.all())
         task.save()
         task_list=Task.objects.all()
         groups=request.user.groups.all()

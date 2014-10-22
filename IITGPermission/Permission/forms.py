@@ -13,7 +13,7 @@ class TaskForm(ModelForm):
     # current_group = forms.ModelChoiceField(queryset=Group.objects.all(), required=False)
     to_date = forms.DateTimeField(widget=SelectDateWidget)
     from_date = forms.DateTimeField(widget=SelectDateWidget)
-    to_date = forms.TimeField(widget=SelectTimeWidget())
+    # to_date = forms.TimeField(widget=SelectTimeWidget())
 
     class Meta:
         model = models.Task

@@ -11,7 +11,7 @@
   </thead>
   <tbody>
       {% for task in tasks %}
-          {% if full_name.username in task.comment %}
+          {% if full_name.username in task.approved_or_denied_by %}
                 <tr>
                   <td>{{ task.template_id }}</td>
                   <td><a href="/Permission/{{ task.id }}/done/ ">{{ task.purpose }}</a></td>
@@ -20,7 +20,7 @@
               </tr>  
           {% else %}
                 {% for group in groups %}
-                    {% if group.name  in task.comment %}
+                    {% if group.name  in task.approved_or_denied_by %}
                       <tr>
                           <td>{{ task.template_id }}</td>
                           <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>

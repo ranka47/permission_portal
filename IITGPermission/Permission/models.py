@@ -27,8 +27,7 @@ class Task(models.Model):
     current_group=models.ForeignKey(Group, null=True)
     level=models.IntegerField(default=1)
     status=models.CharField(max_length=32, default="Pending")
-    done_level=models.IntegerField(default=0)
-    comment=models.TextField(blank=True)
+    approved_or_denied_by=models.TextField(blank=True)
     created_at=models.DateTimeField(auto_now_add=True, blank=True)
     def __str__(self):
         return self.user_name
