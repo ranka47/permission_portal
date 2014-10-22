@@ -19,7 +19,7 @@
             {% if task.user_name == username or   %}
                 <td>{{ task.template_id }}</td>
                 <td>{{task.status}}</td>
-                <td><a href="/Permission/{{ task.id }}/user">{{ task.purpose }}</a></td>
+                <td><a href="/Permission/{{ task.id }}/user" target="_blank">{{ task.purpose }}</a></td>
                 <td>
                     <form action="/Permission/{{task.id}}/delete/">
                         <script type="text/javascript"> 

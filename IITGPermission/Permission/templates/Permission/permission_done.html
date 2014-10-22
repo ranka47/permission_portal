@@ -14,16 +14,16 @@
           {% if full_name.username in task.comment %}
                 <tr>
                   <td>{{ task.template_id }}</td>
-                  <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>
+                  <td><a href="/Permission/{{ task.id }}/done/ " target="_blank" >{{ task.purpose }}</a></td>
                   <td>{{ task.user_name}}</td>
                   <td>{{ task.status }}</td>
               </tr>  
           {% else %}
                 {% for group in groups %}
-                    {% if group.name in task.comment %}
+                    {% if group.name  in task.comment %}
                       <tr>
                           <td>{{ task.template_id }}</td>
-                          <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>
+                          <td><a href="/Permission/{{ task.id }}/done/" target="_blank">{{ task.purpose }}</a></td>
                           <td>{{ task.user_name}}</td>
                           <td>{{ task.status }}</td>
                       </tr>
