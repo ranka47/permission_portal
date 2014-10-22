@@ -7,19 +7,20 @@
 {% if group_has_tasks %}
     <p>List of permissions awaiting your response</p>
     <thead>
-        <th>Permission for</th>
-        <th>Purpose</th>
         <th>Applicant name</th>
+        <th>Permission Type</th>
+        <th>Status</th>
+        <th>Comment</th>
     </thead>
     <tbody>
     {%for task in tasks %}
         {% for group in groups %}
             {% if task.current_group == group %}
                 <tr>
-                    <td>{{ task.template_id }}</td>
-                    <td><a href="/Permission/{{ task.id }}/pending/">{{ task.purpose }}</a></td>
                     <td>{{ task.user_name}}</td>
-                    <td>{{ task.status }}</td>
+                    <td>{{ task.template_id }}</td>
+                    <td><a href="/Permission/{{ task.id }}/pending/">{{ task.status }}</a></td>
+                    <td>{{ task.comment }}</td>
                 </tr>  
             {% endif %}
         {%endfor %}

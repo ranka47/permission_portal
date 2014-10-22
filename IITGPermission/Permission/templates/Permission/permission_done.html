@@ -5,27 +5,28 @@
 <h1 class="page-header">Permissions Decided Upon</h1>
 <table class="table table-striped">
   <thead>
-          <th>Permission for</th>
           <th>Applicant name</th>
-          <th>Purpose</th>
+          <th>Permission Type</th>
+          <th>Status</th>
+          <th>Comment</th>
   </thead>
   <tbody>
       {% for task in tasks %}
           {% if full_name.username in task.approved_or_denied_by %}
                 <tr>
-                  <td>{{ task.template_id }}</td>
-                  <td><a href="/Permission/{{ task.id }}/done/ ">{{ task.purpose }}</a></td>
                   <td>{{ task.user_name}}</td>
-                  <td>{{ task.status }}</td>
+                  <td>{{ task.template_id }}</td>
+                  <td><a href="/Permission/{{ task.id }}/done/ ">{{ task.status }}</a></td>
+                  <td>{{ task.comment }}</td>
               </tr>  
           {% else %}
                 {% for group in groups %}
                     {% if group.name  in task.approved_or_denied_by %}
                       <tr>
-                          <td>{{ task.template_id }}</td>
-                          <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>
                           <td>{{ task.user_name}}</td>
-                          <td>{{ task.status }}</td>
+                          <td>{{ task.template_id }}</td>
+                          <td><a href="/Permission/{{ task.id }}/done/">{{ task.status }}</a></td>
+                          <td>{{ task.comment }}</td>
                       </tr>
                     {% endif %}  
                 {% endfor%}

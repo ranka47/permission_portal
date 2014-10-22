@@ -8,9 +8,10 @@
 <p>Here are all previous permissions you've booked</p>
 <table class="table table-striped">
     <thead>
-        <th>Permission for</th>
+        <th>Permission Type</th>
         <th>Status</th>
-        <th>Purpose</th>
+        <th>Log</th>
+        <th>Delete</th>
     </thead>
     
     <tbody>
@@ -18,8 +19,8 @@
         <tr>
             {% if task.user_name == username %}
                 <td>{{ task.template_id }}</td>
-                <td>{{task.status}}</td>
-                <td><a href="/Permission/{{ task.id }}/user">{{ task.purpose }}</a></td>
+                <td><a href="/Permission/{{ task.id }}/user">{{ task.status }}</a></td>
+                <td>{{task.created_at}}</td>
                 <td>
                     <form action="/Permission/{{task.id}}/delete/">
                         <script type="text/javascript"> 
