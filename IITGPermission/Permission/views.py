@@ -78,12 +78,13 @@ def home(request):
     displays home page for user, with his previous tasks
     """
     task_list=Task.objects.all()
-    # if no previous tasks return message instead of table
+    groups=request.user.groups.all()
     full_name = request.user.username
     return render_to_response('Permission/home.html',
                             {'full_name': full_name.capitalize(),
                             'username':request.user.username,
                             'tasks':task_list,
+                            'groups':groups,
                             'user_has_tasks':user_has_tasks(request.user.username, task_list)},
                             context_instance=RequestContext(request))
 
@@ -169,22 +170,14 @@ def done_permission(request):
 @staff_member_required
 def new_template(request):
     """
-    displays new permission form for the user and processes it
+    displays new template form for the various SGC members
     """
-    # if request.method == 'POST':
-    #     form = forms.TemplateForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()            
-    #         return render_to_response("Permission/template_submitted.html", {'form':form,}, context_instance=RequestContext(request))
-    # else: 
-    # form = forms.TemplateForm()
+    return render(request, 'Permission/new_template.html', )
 
-    return HttpResponseRedirect("/admin/Permission/template/add/")
-    
 @login_required(login_url="/Permission/")
 @staff_member_required
 def existing_template(request):
-    return HttpResponse('template_existing')
+    return render(request, 'Permission/existing_template.html', )
 
 @login_required(login_url="/Permission/")
 @staff_member_required
