@@ -29,6 +29,7 @@ class Task(models.Model):
     status=models.CharField(max_length=32, default="Pending")
     done_level=models.IntegerField(default=0)
     comment=models.TextField(blank=True)
+    created_at=models.DateTimeField(auto_now_add=True, blank=True)
     def __str__(self):
         return self.user_name
 

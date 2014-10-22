@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auth', '0001_initial'),
+        ('auth', '0003_auto_20141007_2145'),
     ]
 
     operations = [
@@ -24,6 +24,9 @@ class Migration(migrations.Migration):
                 ('facilities_required', models.TextField()),
                 ('level', models.IntegerField(default=1)),
                 ('status', models.CharField(default=b'Pending', max_length=32)),
+                ('done_level', models.IntegerField(default=0)),
+                ('comment', models.TextField(blank=True)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('current_group', models.ForeignKey(to='auth.Group', null=True)),
             ],
             options={
