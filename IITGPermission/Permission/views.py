@@ -94,9 +94,16 @@ def delete(request,task_id):
     task.delete()
     return HttpResponseRedirect("/Permission/home/")
 
-def user_detail(request, task_id):
+@login_required(login_url="/Permission/")
+def usertask_detail(request, task_id):
     task = Task.objects.get(id=task_id)
-    return render(request, 'Permission/user_detail.html', {'task':task})
+    return render(request, 'Permission/usertask_detail.html', {'task':task})
+
+@login_required(login_url="/Permission/")
+@staff_member_required
+def done_detail(request, task_id):
+    task = Task.objects.get(id=task_id)
+    return render(request, 'Permission/done_detail.html', {'task':task})
 
 @login_required(login_url="/Permission/")
 def new_permission(request):
@@ -199,7 +206,7 @@ def accepted(request, task_id):
     task = Task.objects.get(id=task_id)
     groups = request.user.groups.all()
     if admin_is_in_current_group(task, groups):
-        task.comment=task.comment+"Approved by: "+request.user.username+"\n"
+        task.comment=task.comment+"\n"+"Approved by: "+str(request.user.username)+" ("+str(request.user.groups.all())[9:-2]+")"
         task.level=task.level+1
         task.done_level=task.done_level+1
 
@@ -231,6 +238,7 @@ def denied(request, task_id):
         task.level=-1
         task.current_group=None
         task.status="Denied"
+        task.comment=task.comment+"\n"+"Denied by: "+str(request.user.groups.all())
         task.save()
         task_list=Task.objects.all()
         groups=request.user.groups.all()

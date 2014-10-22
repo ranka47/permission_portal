@@ -11,15 +11,27 @@
   </thead>
   <tbody>
       {% for task in tasks %}
-         {% if full_name.username in task.comment %}
-              <tr>
+          {% if full_name.username in task.comment %}
+                <tr>
                   <td>{{ task.template_id }}</td>
-                  <td><a href="/Permission/{{ task.id }}/pending/">{{ task.purpose }}</a></td>
+                  <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>
                   <td>{{ task.user_name}}</td>
                   <td>{{ task.status }}</td>
               </tr>  
-            {% endif %}
-        {% endfor %}
+          {% else %}
+                {% for group in groups %}
+                    {% if group in task.comment %}
+                      <tr>
+                          <td>{{ task.template_id }}</td>
+                          <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>
+                          <td>{{ task.user_name}}</td>
+                          <td>{{ task.status }}</td>
+                      </tr>
+                    {% endif %}  
+                {% endfor%}
+          {% endif %}
+      {% endfor %}
+
 <tbody>
             
 </table>

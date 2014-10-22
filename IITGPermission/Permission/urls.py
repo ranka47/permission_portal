@@ -9,11 +9,12 @@ urlpatterns = [
         url('home/$', views.home),
         url('invalid/$', views.login),
 
-        url(r'^(?P<task_id>\d+)/$',views.user_detail),
+        url(r'^(?P<task_id>\d+)/user/$',views.usertask_detail),
         url('new-permission/$', views.new_permission),
         url('pending-permissions/$', views.pending_permissions),
         url(r'^(?P<task_id>\d+)/pending/$',views.detail),
         url('permissions-done/$', views.done_permission),
+        url(r'^(?P<task_id>\d+)/done/$',views.done_detail),
 
         url('new-template/$', views.new_template),
         url('existing-template/$', views.existing_template),

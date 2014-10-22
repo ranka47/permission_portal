@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block pending-permissions %} class="active" {% endblock %}
+{% block permissions-done %} class="active" {% endblock %}
 {% block main %}
 <table class="table table-striped">
     <tr><td><b>Task ID</b></td><td>{{task.id}}</td></tr>
@@ -13,27 +13,11 @@
     <tr><td><b>Facilities Required</b></td><td>{{task.facilities_required}}</td></tr>
     <tr><td><b>Status</b></td><td>{{task.status}}</td></tr>
     <tr><td><b>Comment</b></td><td>{{task.comment}}</td></tr>
-
+    
 </table>
-
-<table  style="margin:10px">
-    <tr>
-        <form action="/Permission/{{task.id}}/accepted/">
-            <td>
-                <button type="submit">Approve</button>
-            </td>
-        </form>
-        <form action="/Permission/{{task.id}}/denied">
-            <td>
-                <button type="submit">Deny</button>
-            </td>
-        </form>
-        <form action="/Permission/pending-permissions/">
-            <td>
-                <button type="submit">Go Back</button>
-            </td>
-        </form>
-    </tr>
-</table>
-
+<form action="/Permission/permissions-done/">
+    <td>
+        <button type="submit">Go Back</button>
+    </td>
+</form>
 {% endblock %}
