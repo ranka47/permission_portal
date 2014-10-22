@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block existing-template %} class="active" {% endblock %}
+{% block main %}
+
+<body onload="timer=setTimeout(function(){ window.location='/admin/Permission/template/';}, 3000)">
+
+<h3>If you are not redirected automatically, follow the <a  href='/admin/Permission/template/'>New Template</a> link.</h3>
+
+
+{% endblock %}

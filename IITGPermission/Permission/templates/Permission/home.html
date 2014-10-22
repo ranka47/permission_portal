@@ -16,7 +16,7 @@
     <tbody>
     {%for task in tasks %}
         <tr>
-            {% if task.user_name == username  %}
+            {% if task.user_name == username or   %}
                 <td>{{ task.template_id }}</td>
                 <td>{{task.status}}</td>
                 <td><a href="/Permission/{{ task.id }}/user">{{ task.purpose }}</a></td>

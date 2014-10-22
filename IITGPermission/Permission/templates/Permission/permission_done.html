@@ -20,7 +20,7 @@
               </tr>  
           {% else %}
                 {% for group in groups %}
-                    {% if group in task.comment %}
+                    {% if group.name in task.comment %}
                       <tr>
                           <td>{{ task.template_id }}</td>
                           <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>
