@@ -10,6 +10,7 @@ class TemplateAdmin(admin.ModelAdmin):
     inlines = [
         TemplateGroupInline,
     ]
+    
 
 class TaskAdmin(admin.ModelAdmin):
     readonly_fields = ('user_name',)

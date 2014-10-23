@@ -17,22 +17,22 @@ class Task(models.Model):
     Task (Permission) database
     """
     template_id=models.ForeignKey(Template)
-    subject = models.CharField(max_length=100)
-
     user_name = models.CharField(max_length=100)
     user_department = models.CharField(max_length=100)
     user_designation = models.CharField(max_length=100)
+
+    from_date = models.DateField()
+    from_time=models.TimeField()
+    to_date = models.DateField()
+    to_time = models.TimeField()
+
     purpose = models.TextField()
     facilities_required = models.TextField()
-
-    created_at=models.DateTimeField(auto_now_add=True, blank=True)
-    from_date = models.DateTimeField()
-    to_date = models.DateTimeField()
-
     current_group=models.ForeignKey(Group, null=True)
     level=models.IntegerField(default=1)
     status=models.CharField(max_length=32, default="Pending")
     approved_or_denied_by=models.TextField(blank=True)
+    created_at=models.DateTimeField(auto_now_add=True, blank=True)
     def __str__(self):
         return self.user_name
 
