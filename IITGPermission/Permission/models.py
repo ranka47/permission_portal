@@ -20,8 +20,12 @@ class Task(models.Model):
     user_name = models.CharField(max_length=100)
     user_department = models.CharField(max_length=100)
     user_designation = models.CharField(max_length=100)
-    from_date = models.DateTimeField()
-    to_date = models.DateTimeField()
+
+    from_date = models.DateField()
+    from_time=models.TimeField()
+    to_date = models.DateField()
+    to_time = models.TimeField()
+
     purpose = models.TextField()
     facilities_required = models.TextField()
     current_group=models.ForeignKey(Group, null=True)
