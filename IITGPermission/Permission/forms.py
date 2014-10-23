@@ -4,12 +4,8 @@ from django.utils import timezone
 from django.forms import ModelForm
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
-<<<<<<< HEAD
 from django.utils.translation import ugettext_lazy as _
-=======
 from Permission import selecttimewidget
->>>>>>> ef70709c51dc8ce25e1acb0e8305dbd13269287d
-
 
 class TaskForm(ModelForm):
     """
