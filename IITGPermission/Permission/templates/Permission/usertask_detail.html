@@ -16,6 +16,35 @@
     <tr><td><b>Comment</b></td><td>{{task.comment}}</td></tr>
     <tr><td>    
 </table>
+
+<div class="container" style="margin-top:30px;">
+    <div class="col-md-4" style="background-color: #f5f5f5; padding-bottom:20px;">
+
+        {% if task.comment_set.all %}
+            <h4>Previous Comments</h4>
+        {% else %}
+            <h4>Comments</h4>
+            <p>No previous Comments.</p>
+        {% endif %}
+
+        <table class="table">
+            {% for comment in task.comment_set.all %}
+            <tr>
+                <td style="color: #428bca; font-weight: bold;">{{ comment.user }}</td>
+                <td>{{ comment.text }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        <form action="/Permission/{{ task.id }}/pending/comment/" method="post">
+            {% csrf_token %}
+            {{ comment_form }}
+            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"></input>
+        </form>
+
+    </div>
+</div>
+
 <form action="/Permission/home/">
     <td>
         <button type="submit">Go Back</button>

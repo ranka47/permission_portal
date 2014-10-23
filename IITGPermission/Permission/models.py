@@ -48,5 +48,5 @@ class TemplateGroup(models.Model):
 class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.CharField(max_length=50)
-    text = models.CharField(max_length=200, help_text="Uasdf")
+    text = models.TextField()
     task = models.ForeignKey(Task)

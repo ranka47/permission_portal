@@ -97,7 +97,11 @@ def delete(request,task_id):
 @login_required(login_url="/Permission/")
 def usertask_detail(request, task_id):
     task = Task.objects.get(id=task_id)
-    return render(request, 'Permission/usertask_detail.html', {'task':task})
+    return render(request, 'Permission/usertask_detail.html', {
+                            'task':task,
+                            'comment_form': forms.CommentForm,
+                            },
+                            context_instance=RequestContext(request))
 
 @login_required(login_url="/Permission/")
 @staff_member_required
@@ -242,6 +246,24 @@ def denied(request, task_id):
 @login_required(login_url="/Permission/")
 @staff_member_required
 def pending_comment(request, task_id):
+    if request.method == 'POST':
+        form = forms.CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            if not Task.objects.get(id=task_id):
+                return HttpResponseRedirect('/Permission/pending-permissions/')
+            comment.task = Task.objects.get(id=task_id)
+            comment.user = request.user.username
+            comment.save()
+            url = '/Permission/'
+            url += task_id
+            url += '/pending/'
+            return HttpResponseRedirect(url)
+    else: 
+        return HttpResponseRedirect('/Permission/pending/')
+
+@login_required(login_url="/Permission/")
+def user_comment(request, task_id):
     if request.method == 'POST':
         form = forms.CommentForm(request.POST)
         if form.is_valid():

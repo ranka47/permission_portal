@@ -30,7 +30,7 @@ class TaskFormSubmitted(ModelForm):
 
 class CommentForm(ModelForm):
     text = forms.CharField(label='', 
-                    widget=forms.TextInput(attrs={'placeholder': 'Enter Comment'}))
+                    widget=forms.Textarea(attrs={'placeholder': 'Enter your comment', 'rows':3, 'cols':30}))
     class Meta:
         model = models.Comment
         fields = ('text',)
