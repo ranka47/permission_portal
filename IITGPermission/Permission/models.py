@@ -29,7 +29,6 @@ class Task(models.Model):
     from_date = models.DateTimeField()
     to_date = models.DateTimeField()
 
-
     current_group=models.ForeignKey(Group, null=True)
     level=models.IntegerField(default=1)
     status=models.CharField(max_length=32, default="Pending")
@@ -45,3 +44,9 @@ class TemplateGroup(models.Model):
 
     class Meta:
         ordering = ('number',)
+
+class Comment(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.CharField(max_length=50)
+    text = models.CharField(max_length=200, help_text="Uasdf")
+    task = models.ForeignKey(Task)

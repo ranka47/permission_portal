@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.forms import ModelForm
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
+from django.utils.translation import ugettext_lazy as _
 
 
 class TaskForm(ModelForm):
@@ -21,16 +22,19 @@ class TaskForm(ModelForm):
 
 
 class TaskFormSubmitted(ModelForm):
-	"""
-	TaskFormSubmitted generated after form is submitted to take permissions from different levels of
-	hierarchy
-	"""
-	
+    """
+    TaskFormSubmitted generated after form is submitted to take permissions from different levels of
+    hierarchy
+    """
+
+class CommentForm(ModelForm):
+    text = forms.CharField(label='', 
+                    widget=forms.TextInput(attrs={'placeholder': 'Enter Comment'}))
+    class Meta:
+        model = models.Comment
+        fields = ('text',)
 
 # class TemplateForm(ModelForm):
-# 	class Meta:
-# 		model = models.Template
-# 		fields = ('name','description','hierarchy_1','hierarchy_2','hierarchy_3','hierarchy_4','hierarchy_5')
-
-
-
+#   class Meta:
+#       model = models.Template
+#       fields = ('name','description','hierarchy_1','hierarchy_2','hierarchy_3','hierarchy_4','hierarchy_5')

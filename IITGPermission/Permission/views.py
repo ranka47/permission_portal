@@ -184,7 +184,9 @@ def existing_template(request):
 def detail(request, task_id):
 
     task = Task.objects.get(id=task_id)
-    return render(request, 'Permission/detail.html', {'task':task})
+    return render(request, 'Permission/detail.html', {'task':task,
+                            'comment_form': forms.CommentForm,},
+                            context_instance=RequestContext(request))
 
 def admin_is_in_current_group(task, groups):
     for group in groups.all():
@@ -236,3 +238,22 @@ def denied(request, task_id):
         return HttpResponseRedirect('/Permission/pending-permissions/')    
     else:
         return HttpResponseRedirect('/Permission/pending-permissions/')    
+
+@login_required(login_url="/Permission/")
+@staff_member_required
+def pending_comment(request, task_id):
+    if request.method == 'POST':
+        form = forms.CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            if not Task.objects.get(id=task_id):
+                return HttpResponseRedirect('/Permission/pending-permissions/')
+            comment.task = Task.objects.get(id=task_id)
+            comment.user = request.user.username
+            comment.save()
+            url = '/Permission/'
+            url += task_id
+            url += '/pending/'
+            return HttpResponseRedirect(url)
+    else: 
+        return HttpResponseRedirect('/Permission/pending/')

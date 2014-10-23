@@ -13,6 +13,7 @@ urlpatterns = [
         url('new-permission/$', views.new_permission),
         url('pending-permissions/$', views.pending_permissions),
         url(r'^(?P<task_id>\d+)/pending/$',views.detail),
+        url(r'^(?P<task_id>\d+)/pending/comment/$',views.pending_comment),
         url('permissions-done/$', views.done_permission),
         url(r'^(?P<task_id>\d+)/done/$',views.done_detail),
 

@@ -11,10 +11,31 @@
     <tr><td><b>To Date</td><td>{{task.to_date}}</td></tr>
     <tr><td><b>Purposes</b></td><td>{{task.purpose}}</td></tr>
     <tr><td><b>Facilities Required</b></td><td>{{task.facilities_required}}</td></tr>
+    <tr><td><b>Approved/Denied by</b></td><td>{{ task.approved_or_denied_by }}</td></tr>
     <tr><td><b>Status</b></td><td>{{task.status}}</td></tr>
-    <tr><td><b>Comment</b></td><td>{{task.comment}}</td></tr>
-
+    <tr><td><b>Status</b></td><td>{{task.status}}</td></tr>
 </table>
+
+<div class="container" style="margin-top:30px;">
+<h4>Previous Comments</h4>
+    <div class="col-md-4" style="background-color: #f5f5f5">
+        <table class="table">
+            {% for comment in task.comment_set.all %}
+            <tr>
+                <td style="color: #428bca; font-weight: bold;">{{ comment.user }}</td>
+                <td>{{ comment.text }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <form action="/Permission/{{ task.id }}/pending/comment/" method="post">
+            {% csrf_token %}
+            {{ comment_form }}
+            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"></input>
+        </form>
+
+    </div>
+</div>
+
 
 <table  style="margin:10px">
     <tr>
@@ -35,5 +56,4 @@
         </form>
     </tr>
 </table>
-
 {% endblock %}
