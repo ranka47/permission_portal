@@ -8,8 +8,9 @@
     <p>List of permissions awaiting your response</p>
     <thead>
         <th>Permission for</th>
-        <th>Purpose</th>
+        <th>Subject</th>
         <th>Applicant name</th>
+        <th>Status</th>
     </thead>
     <tbody>
     {%for task in tasks %}
@@ -17,7 +18,7 @@
             {% if task.current_group == group %}
                 <tr>
                     <td>{{ task.template_id }}</td>
-                    <td><a href="/Permission/{{ task.id }}/pending/">{{ task.purpose }}</a></td>
+                    <td><a href="/Permission/{{ task.id }}/pending/">{{ task.subject }}</a></td>
                     <td>{{ task.user_name}}</td>
                     <td>{{ task.status }}</td>
                 </tr>  

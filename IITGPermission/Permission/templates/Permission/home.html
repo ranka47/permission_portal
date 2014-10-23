@@ -9,8 +9,8 @@
 <table class="table table-striped">
     <thead>
         <th>Permission for</th>
+        <th>Subject</th>
         <th>Status</th>
-        <th>Purpose</th>
     </thead>
     
     <tbody>
@@ -18,17 +18,11 @@
         <tr>
             {% if task.user_name == username %}
                 <td>{{ task.template_id }}</td>
+                <td><a href="/Permission/{{ task.id }}/user">{{ task.subject }}</a></td>
                 <td>{{task.status}}</td>
-                <td><a href="/Permission/{{ task.id }}/user">{{ task.purpose }}</a></td>
                 <td>
-                    <form action="/Permission/{{task.id}}/delete/">
-                        <script type="text/javascript"> 
-                            function confirmDelete()
-                             {  
-                                return confirm("Are you sure you want to delete?");   
-                            } 
-                        </script> 
-                        <button type="submit" onclick="confirmDelete()">Delete</button>
+                    <form action="/Permission/{{task.id}}/delete/" onsubmit="return confirm('Are you sure you want to delete?')">
+                        <button type="submit">Delete</button>
                     </form>
                 </td>
             {% endif %}

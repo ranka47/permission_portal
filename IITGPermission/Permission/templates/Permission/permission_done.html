@@ -6,8 +6,9 @@
 <table class="table table-striped">
   <thead>
           <th>Permission for</th>
+          <th>Subject</th>
           <th>Applicant name</th>
-          <th>Purpose</th>
+          <th>Status</th>
   </thead>
   <tbody>
       {% for task in tasks %}
@@ -23,7 +24,7 @@
                     {% if group.name  in task.approved_or_denied_by %}
                       <tr>
                           <td>{{ task.template_id }}</td>
-                          <td><a href="/Permission/{{ task.id }}/done/">{{ task.purpose }}</a></td>
+                          <td><a href="/Permission/{{ task.id }}/done/">{{ task.subject }}</a></td>
                           <td>{{ task.user_name}}</td>
                           <td>{{ task.status }}</td>
                       </tr>
