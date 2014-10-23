@@ -10,6 +10,8 @@ class TemplateAdmin(admin.ModelAdmin):
     inlines = [
         TemplateGroupInline,
     ]
+    class Media:
+        js = ('admin/js/mymodel.js',)
 
 class TaskAdmin(admin.ModelAdmin):
     readonly_fields = ('user_name',)

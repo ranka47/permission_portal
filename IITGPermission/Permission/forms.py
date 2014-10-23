@@ -17,7 +17,7 @@ class TaskForm(ModelForm):
 
     class Meta:
         model = models.Task
-        fields = ('template_id', 'subject', 'user_department', 'user_designation', 'from_date', 'to_date', 'purpose', 'facilities_required')
+        fields = ('template_id','user_department', 'user_designation', 'from_date', 'to_date', 'purpose', 'facilities_required')
 
 
 class TaskFormSubmitted(ModelForm):
