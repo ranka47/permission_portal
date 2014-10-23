@@ -3,7 +3,8 @@ from django.contrib.auth.models import User, Group, Permission
 from django.utils import timezone
 from django.forms import ModelForm
 from django import forms
-from django.forms.extras.widgets import SelectDateWidget, SelectTimeWidget
+from django.forms.extras.widgets import SelectDateWidget
+from Permission import selecttimewidget
 
 
 class TaskForm(ModelForm):
@@ -12,9 +13,9 @@ class TaskForm(ModelForm):
     """
     # current_group = forms.ModelChoiceField(queryset=Group.objects.all(), required=False)
     from_date = forms.DateField(widget=SelectDateWidget)
-    from_time =forms.TimeField(widget=SelectTimeWidget())
+    from_time =forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
     to_date = forms.DateField(widget=SelectDateWidget)
-    to_time = forms.TimeField(widget=SelectTimeWidget())
+    to_time = forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
 
     class Meta:
         model = models.Task
