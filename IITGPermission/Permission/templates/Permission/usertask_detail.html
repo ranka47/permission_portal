@@ -35,11 +35,11 @@
             </tr>
             {% endfor %}
         </table>
-        
+
         <form action="/Permission/{{ task.id }}/pending/comment/" method="post">
             {% csrf_token %}
             {{ comment_form }}
-            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"></input>
+            </br><button type="submit">Comment</button>
         </form>
 
     </div>

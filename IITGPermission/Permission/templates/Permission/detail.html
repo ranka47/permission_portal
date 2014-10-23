@@ -17,7 +17,7 @@
 </table>
 
 <div class="container" style="margin-top:30px;">
-    <div class="col-md-4" style="background-color: #f5f5f5;">
+    <div class="col-md-4" style="background-color: #f5f5f5; border-radius: 2px;">
     <h4>Previous Comments</h4>
         <table class="table">
             {% for comment in task.comment_set.all %}
@@ -31,7 +31,8 @@
         <form action="/Permission/{{ task.id }}/pending/comment/" method="post" style="margin-bottom:10px;">
             {% csrf_token %}
             {{ comment_form }}
-            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"></input>
+        
+            </br><button type="submit">Comment</button>
         </form>
 
     </div>
