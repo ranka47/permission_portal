@@ -1,2 +1,0 @@
-1. changing the 'Django Administration' thing.
-2. Adding the Back button in the change_form.html.
