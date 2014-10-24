@@ -112,10 +112,45 @@ background-color: #428bca;
   margin:5px;
 }
 
-#brand-toggle{
+button {
+    font-size: 14px;
+    padding: 4px 13px 4px 13px;
+    color: #fffff8;
+    background-color:  #428bca;
+    border: 1.5px solid #428bca;
+    border-radius: 6px;
+}
+button:hover {
+    background-color: #fffff8;
+    color:  #428bca;
+}
+
+button.submit{
+    margin: 20px 0px 30px 15px;
+}
+
+button.comment{
+    margin: 10px 0px 10px 4px;
+    font-size: 12px;
+    padding: 3px 10px 3px 10px;
+    color: #428bca;
+    background-color:  #fffff8;
+}
+
+button.comment:hover {
+    color: #fffff8;
+    background-color:  #428bca;
+}
+
+#brand-toggle {
     font-size: 19px;
     color:  #68A2D5;
     border-bottom: 1px solid #eee;
+}
+
+label {
+    font-weight: normal;
+    margin: 15px;
 }
 
 @media(min-width:768px) {
@@ -140,7 +175,7 @@ background-color: #428bca;
     }
 
     #page-content-wrapper {
-        color: #555;
+        color: #444;
     }
     #wrapper.toggled #page-content-wrapper {
         position: relative;

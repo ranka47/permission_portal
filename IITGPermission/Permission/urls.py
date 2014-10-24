@@ -10,16 +10,19 @@ urlpatterns = [
         url('invalid/$', views.login),
 
         url(r'^(?P<task_id>\d+)/user/$',views.usertask_detail),
+        url(r'^(?P<task_id>\d+)/user/comment/$',views.user_comment),
         url('new-permission/$', views.new_permission),
+        url('submitted/$', views.new_permission),
+
         url('pending-permissions/$', views.pending_permissions),
         url(r'^(?P<task_id>\d+)/pending/$',views.detail),
         url(r'^(?P<task_id>\d+)/pending/comment/$',views.pending_comment),
+        
         url('permissions-done/$', views.done_permission),
         url(r'^(?P<task_id>\d+)/done/$',views.done_detail),
 
         url('new-template/$', views.new_template),
         url('existing-template/$', views.existing_template),
-        url('submitted/$', views.new_permission),
         url(r'^(?P<task_id>\d+)/accepted/$',views.accepted),
         url(r'^(?P<task_id>\d+)/denied/$',views.denied),
         url(r'^(?P<task_id>\d+)/delete/$',views.delete),

@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block pending-permissions %} class="active" {% endblock %}
 {% block main %}
+
+<h2 class="sub-header">{{task.template_id}}</h2>
+<hr>
+
 <table class="table table-striped">
     <tr><td><b>Task ID</b></td><td>{{task.id}}</td></tr>
     <tr><td><b>Type of Permission</b></td><td>{{task.template_id}}</td></tr>
@@ -14,10 +18,39 @@
     <tr><td><b>Approved/Denied by</b></td><td>{{ task.approved_or_denied_by }}</td></tr>
     <tr><td><b>Status</b></td><td>{{task.status}}</td></tr>
     <tr><td><b>Comment</b></td><td>{{task.comment}}</td></tr>
+</table>
 
-<div class="container" style="margin-top:30px;">
-    <div class="col-md-4" style="background-color: #f5f5f5; border-radius: 2px;">
-    <h4>Previous Comments</h4>
+
+<table  style="margin:10px">
+    <tr>
+        <form action="/Permission/{{task.id}}/accepted/">
+            <td>
+                <button type="submit" class="submit">Approve</button>
+            </td>
+        </form>
+        <form action="/Permission/{{task.id}}/denied">
+            <td>
+                <button type="submit" class="submit">Deny</button>
+            </td>
+        </form>
+        <form action="/Permission/pending-permissions/">
+            <td>
+                <button type="submit" class="submit">Go Back</button>
+            </td>
+        </form>
+    </tr>
+</table>
+<hr>
+<div class="container" style=" margin-bottom: 30px">
+    <div class="col-md-4" style="background-color: #f5f5f5; padding-top: 10px; padding-bottom:20px;">
+        
+        {% if task.comment_set.all %}
+            <h4>Previous Comments</h4>
+        {% else %}
+            <h4>Comments</h4>
+            <p>No previous Comments.</p>
+        {% endif %}
+
         <table class="table">
             {% for comment in task.comment_set.all %}
             <tr>
@@ -31,30 +64,10 @@
             {% csrf_token %}
             {{ comment_form }}
         
-            </br><button type="submit">Comment</button>
+            </br><button type="submit" class="comment">Comment</button>
         </form>
 
     </div>
 </div>
 
-
-<table  style="margin:10px">
-    <tr>
-        <form action="/Permission/{{task.id}}/accepted/">
-            <td>
-                <button type="submit">Approve</button>
-            </td>
-        </form>
-        <form action="/Permission/{{task.id}}/denied">
-            <td>
-                <button type="submit">Deny</button>
-            </td>
-        </form>
-        <form action="/Permission/pending-permissions/">
-            <td>
-                <button type="submit">Go Back</button>
-            </td>
-        </form>
-    </tr>
-</table>
 {% endblock %}

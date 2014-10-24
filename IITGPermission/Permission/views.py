@@ -269,13 +269,13 @@ def user_comment(request, task_id):
         if form.is_valid():
             comment = form.save(commit=False)
             if not Task.objects.get(id=task_id):
-                return HttpResponseRedirect('/Permission/pending-permissions/')
+                return HttpResponseRedirect('/Permission/home/')
             comment.task = Task.objects.get(id=task_id)
             comment.user = request.user.username
             comment.save()
             url = '/Permission/'
             url += task_id
-            url += '/pending/'
+            url += '/user/'
             return HttpResponseRedirect(url)
     else: 
-        return HttpResponseRedirect('/Permission/pending/')
+        return HttpResponseRedirect('/Permission/home/')

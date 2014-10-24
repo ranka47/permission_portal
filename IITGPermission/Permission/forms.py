@@ -16,6 +16,8 @@ class TaskForm(ModelForm):
     from_time =forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
     to_date = forms.DateField(widget=SelectDateWidget)
     to_time = forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
+    purpose = forms.CharField(widget=forms.Textarea(attrs={'rows':6, 'cols':30}))
+    facilities_required = forms.CharField(widget=forms.Textarea(attrs={'rows':6, 'cols':30}))
 
     class Meta:
         model = models.Task
@@ -30,7 +32,7 @@ class TaskFormSubmitted(ModelForm):
 
 class CommentForm(ModelForm):
     text = forms.CharField(label='', 
-                    widget=forms.Textarea(attrs={'placeholder': 'Enter your comment', 'rows':3, 'cols':30}))
+                    widget=forms.Textarea(attrs={'placeholder': 'Enter your comment', 'rows':3, 'cols':40}))
     class Meta:
         model = models.Comment
         fields = ('text',)
