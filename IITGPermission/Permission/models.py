@@ -8,7 +8,7 @@ import datetime
 class Template(models.Model):
     name = models.CharField(max_length=128)
     description=models.TextField(default=" ")
-    groups = models.ManyToManyField(Group, through='TemplateGroup')
+    users = models.ManyToManyField(User, through='TemplateUser')
     def __str__(self):
         return self.name
 
@@ -18,8 +18,8 @@ class Task(models.Model):
     """
     template_id=models.ForeignKey(Template)
     user_name = models.CharField(max_length=100)
-    user_department = models.CharField(max_length=100)
-    user_designation = models.CharField(max_length=100)
+    # user_department = models.CharField(max_length=100)
+    # user_designation = models.CharField(max_length=100)
 
     from_date = models.DateField()
     from_time=models.TimeField()
@@ -28,7 +28,7 @@ class Task(models.Model):
 
     purpose = models.TextField()
     facilities_required = models.TextField()
-    current_group=models.ForeignKey(Group, null=True)
+    current_user=models.ForeignKey(User, null=True)
     level=models.IntegerField(default=1)
     status=models.CharField(max_length=32, default="Pending")
     approved_or_denied_by=models.TextField(blank=True)
@@ -37,9 +37,9 @@ class Task(models.Model):
         return self.user_name
 
 
-class TemplateGroup(models.Model):
+class TemplateUser(models.Model):
     template = models.ForeignKey(Template)
-    group = models.ForeignKey(Group)
+    user = models.ForeignKey(User)
     number = models.PositiveSmallIntegerField()
 
     class Meta:

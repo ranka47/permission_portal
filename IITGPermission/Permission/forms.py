@@ -13,15 +13,16 @@ class TaskForm(ModelForm):
     """
     # current_group = forms.ModelChoiceField(queryset=Group.objects.all(), required=False)
     from_date = forms.DateField(widget=SelectDateWidget)
-    from_time =forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
+    # from_time =forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
     to_date = forms.DateField(widget=SelectDateWidget)
-    to_time = forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
+    # to_time = forms.TimeField(widget=selecttimewidget.SelectTimeWidget())
     purpose = forms.CharField(widget=forms.Textarea(attrs={'rows':6, 'cols':30}))
     facilities_required = forms.CharField(widget=forms.Textarea(attrs={'rows':6, 'cols':30}))
 
     class Meta:
         model = models.Task
-        fields = ('template_id','user_department', 'user_designation', 'from_date', 'from_time','to_date','to_time', 'purpose', 'facilities_required')
+        # fields = ('template_id','user_department', 'user_designation', 'from_date', 'from_time','to_date','to_time', 'purpose', 'facilities_required')
+        fields = ('template_id','from_date','to_date', 'purpose', 'facilities_required')
 
 
 class TaskFormSubmitted(ModelForm):

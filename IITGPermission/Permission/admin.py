@@ -1,14 +1,14 @@
 from django.contrib import admin
-from Permission.models import Template, Group, Task, TemplateGroup
+from Permission.models import Template, Group, Task, TemplateUser
 
-class TemplateGroupInline(admin.TabularInline):
+class TemplateUserInline(admin.TabularInline):
 
-    model = TemplateGroup
+    model = TemplateUser
     extra = 1
 
 class TemplateAdmin(admin.ModelAdmin):
     inlines = [
-        TemplateGroupInline,
+        TemplateUserInline,
     ]
     
 
@@ -18,4 +18,4 @@ class TaskAdmin(admin.ModelAdmin):
 # admin.site.register(Group, GroupAdmin)
 admin.site.register(Template, TemplateAdmin)
 admin.site.register(Task,TaskAdmin)
-admin.site.register(TemplateGroup)
+admin.site.register(TemplateUser)
