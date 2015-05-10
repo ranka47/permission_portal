@@ -9,10 +9,43 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import get_object_or_404
 from Permission import forms
-from Permission.models import Task, Template
-from django.contrib.auth.models import Group
+from Permission import models
+from django.contrib.auth.models import Group, User
+from Permission import pdf
+import datetime, os
 
+# Extensions allowed for uploading documents for the request asked
+extensions = ['.jpg','.jpeg','.pdf','.png','']
 
+def findReviewedTasks(user):
+    checkStr = user.username + "->"
+    reviewedTasks = []
+    tasks = models.Task.objects.all()
+    for task in tasks:
+        lastUser = "->" + user.username
+        if checkStr in task.status_description or lastUser in task.status_description:
+            reviewedTasks.append(task)
+    return reviewedTasks
+    
+def findLastUser(task):
+    lastUser = ""
+    i = -1
+    char = task.status_description[i]
+    while(char!='>'):
+        lastUser = char + lastUser 
+        i=i - 1
+        char = task.status_description[i]
+    return lastUser
+    
+def findFirstUser(task):
+    firstUser = ""
+    i=0
+    char = task.status_description[i]
+    while(char!='-'):
+        firstUser = firstUser + char
+        i = i + 1
+        char = task.status_description[i]
+    return firstUser
 #------------------------------------------------------------
 #       User Authentication
 #------------------------------------------------------------
@@ -23,10 +56,7 @@ def login(request):
     """
     c = {}
     c.update(csrf(request))
-    if request.method == 'POST':
-        return render_to_response('Permission/login.html', {'form_errors': form_errors})
-    else:
-        return render_to_response('Permission/login.html', c)
+    return render_to_response('Permission/login.html', c)
 
 
 @login_required(login_url="/Permission")
@@ -53,229 +83,220 @@ def auth_view(request):
 
     else:
         # Return an 'invalid login' error message.
-        return HttpResponseRedirect('/Permission/')
-
-
-# def submitted(request):
-    """
-    Confirmation after adding Task
-    """
-
+        return render(request,'Permission/login.html',{
+            'form_errors':True,
+            })
 
 #------------------------------------------------------------
 #       User's dashboard
 #------------------------------------------------------------
 
-def user_has_tasks(username, tasks):
-    for task in tasks:
-        if task.user_name == username:
-            return True
-    return False
+
 
 @login_required(login_url="/Permission/")
 def home(request):
     """
     displays home page for user, with his previous tasks
     """
-    task_list=Task.objects.all()
-    groups=request.user.groups.all()
-    full_name = request.user.username
-    return render_to_response('Permission/home.html',
-                            {'full_name': full_name.capitalize(),
-                            'username':request.user.username,
-                            'tasks':task_list,
-                            'groups':groups,
-                            'user_has_tasks':user_has_tasks(request.user.username, task_list)},
-                            context_instance=RequestContext(request))
+    # tasks=models.Task.objects.all()
+    full_name = request.user.first_name+" "+request.user.last_name
+    myTasks = []
+    for task in models.Task.objects.all():
+        if findFirstUser(task) == request.user.username:
+            myTasks.append(task)
+    return render_to_response('Permission/home.html',{
+        'tasks':myTasks,
+        'full_name':full_name,
 
-@login_required(login_url="/Permission/")
-def delete(request,task_id):
-    task = Task.objects.get(id=task_id)
-    task.delete()
-    return HttpResponseRedirect("/Permission/home/")
-
-@login_required(login_url="/Permission/")
-def usertask_detail(request, task_id):
-    task = Task.objects.get(id=task_id)
-    return render(request, 'Permission/usertask_detail.html', {
-                            'task':task,
-                            'comment_form': forms.CommentForm,
-                            },
-                            context_instance=RequestContext(request))
-
-@login_required(login_url="/Permission/")
-@staff_member_required
-def done_detail(request, task_id):
-    task = Task.objects.get(id=task_id)
-    return render(request, 'Permission/done_detail.html', {'task':task})
+        })
 
 @login_required(login_url="/Permission/")
 def new_permission(request):
-    """
-    displays new permission form for the user and processes it
-    """
-    if request.method == 'POST':
-        form = forms.TaskForm(request.POST)
-        if form.is_valid():
-            
+    if request.method == "POST":
+        form = forms.TaskForm(request.POST, request.FILES)
+        users = User.objects.all()
+        users = users.exclude(username=request.user.username)
+        fileExtension = ''
+        # return HttpResponse(request.path)
+        try:
+            fileExtension = os.path.splitext(request.FILES['required_files'].name)[1]
+        except:
+            pass
+        if form.is_valid() and fileExtension in extensions:
             task = form.save(commit=False)
-            task.current_group=task.template_id.templategroup_set.get(number=1).group
-            task.user_name = request.user.username
+            task.applicant = request.user.username+" ("+request.user.first_name+" "+request.user.last_name+")"
+            task.date_of_application = datetime.datetime.now()
+            task.status = "Pending"
+            task.status_description = request.user.username+"->"+request.POST['user']
             task.save()
-            
-            form.fields['user_department'].widget.attrs['readonly']=True
-            form.fields['user_designation'].widget.attrs['readonly']=True
-            form.fields['from_date'].widget.attrs['readonly']=True
-            form.fields['to_date'].widget.attrs['readonly']=True
-            form.fields['purpose'].widget.attrs['readonly']=True
-            form.fields['facilities_required'].widget.attrs['readonly']=True
-            return render_to_response("Permission/submitted.html", {'form':form, 'task':task,}, context_instance=RequestContext(request))
-    else: 
-        form = forms.TaskForm()
+            return HttpResponseRedirect('/Permission/home')
+        elif form.is_valid() and fileExtension not in extensions:
+            return render(request, 'Permission/new_permission.html',{'form':form,
+                        'success':False,
+                        'users':users,
+                        'message':"You can upload .jpg, .jpeg, .pdf and .png files only"})
+        else:
+            return render(request, 'Permission/new_permission.html',{
+                'form':form,
+                'success':False,
+                'users':users,
+                'message':"Please correct the errors and submit again."
+                })
+    else:
+        form=forms.TaskForm()
+        users=User.objects.all()
+        users = users.exclude(username=request.user.username)
 
-    return render_to_response("Permission/new_permission.html", {'form':form}, context_instance=RequestContext(request))
+        return render(request, 'Permission/new_permission.html',{
+            'users':users,        
+            'form':form,
+            })
 
-def group_has_tasks(groups, tasks):
+@login_required(login_url="/Permission")
+def pending(request):
+    revUser = request.user.username[::-1]+">"
+    tasks = models.Task.objects.all()
+    pendingTasks=[]
     for task in tasks:
-        for group in groups:
-            if task.current_group == group:
-                return True
-    return False
+        revDesc = task.status_description[::-1]
+        if revDesc.startswith(revUser) and task.status == "Pending":
+            pendingTasks.append(task)
+    return render(request, 'Permission/pending.html',{
+        'pendingTasks':pendingTasks,
+        })
 
-@login_required(login_url="/Permission/")
-@staff_member_required
-def pending_permissions(request):
-    """
-    displays home page for user
-    """
-    task_list=Task.objects.all()
-    groups=request.user.groups.all()
-    return render_to_response('Permission/pending.html',
-                            {'full_name': request.user,
-                            'groups':groups,
-                            'tasks':task_list,
-                            'group_has_tasks': group_has_tasks(groups, task_list),},
-                            context_instance=RequestContext(request))
+@login_required(login_url="/Permission")
+def reviewed(request):
+    return render(request, 'Permission/reviewed.html',{
+        'reviewedTasks':findReviewedTasks(request.user),
+        })
 
-    
+@login_required(login_url="/Permission")
+def getPDF(request, task_id):
+    return pdf.pdf_gen(models.Task.objects.get(id=task_id))
 
-@login_required(login_url="/Permission/")
-@staff_member_required
-def done_permission(request):
-    task_list=Task.objects.all()
-    groups=request.user.groups.all()
-    return render_to_response('Permission/permission_done.html',
-                            {'full_name': request.user,
-                            'groups':groups,
-                            'tasks':task_list,},
-                            context_instance=RequestContext(request))
-    
-@login_required(login_url="/Permission/")
-@staff_member_required
-def new_template(request):
-    """
-    displays new template form for the various SGC members
-    """
-    return render(request, 'Permission/new_template.html', )
 
-@login_required(login_url="/Permission/")
-@staff_member_required
-def existing_template(request):
-    return render(request, 'Permission/existing_template.html', )
+@login_required(login_url="/Permission")
+def details(request, task_id):
+    task = models.Task.objects.get(id=task_id)
+    users = User.objects.all().exclude(username=request.user.username)
+    commentForm = forms.CommentForm()
+    showOptions = False
+    if task.status == "Pending":
+        showOptions = True
+    if request.method == "POST":
+        task.status_description = task.status_description + "->" + request.POST['user']
+        task.save()
+        return render(request, 'Permission/reviewed.html',{
+            'reviewedTasks':findReviewedTasks(request.user),
+            })
+    return render(request, 'Permission/details.html',{
+        'task':task,
+        'user':request.user,
+        'lastUser':findLastUser(task),
+        'firstUser':findFirstUser(task),
+        'showOptions':showOptions,
+        'users':users,
+        'commentForm':commentForm,
+        })
 
-@login_required(login_url="/Permission/")
-@staff_member_required
-def detail(request, task_id):
-
-    task = Task.objects.get(id=task_id)
-    return render(request, 'Permission/detail.html', {'task':task,
-                            'comment_form': forms.CommentForm,},
-                            context_instance=RequestContext(request))
-
-def admin_is_in_current_group(task, groups):
-    for group in groups.all():
-        if task.current_group==group:
-            return True
-        else:
-            return False
-@login_required(login_url="/Permission/")
-@staff_member_required
+@login_required(login_url="/Permission")
 def accepted(request, task_id):
-    task = Task.objects.get(id=task_id)
-    groups = request.user.groups.all()
-    if admin_is_in_current_group(task, groups):
-        task.approved_or_denied_by=task.approved_or_denied_by+"\n"+"Approved by: "+str(request.user.username)
-        task.level=task.level+1
+    task = models.Task.objects.get(id=task_id)
+    task.status = "Accepted"
+    task.save()
+    return render(request, 'Permission/reviewed.html',{
+            'reviewedTasks':findReviewedTasks(request.user),
+        })
 
-        """Count is there to take the max value of number"""
-        
-        count=0
-        for num in task.template_id.templategroup_set.all():
-            if num.number != 0:
-                 count=count+1
-        if task.level==count+1:
-            task.status="Accepted"
-            task.current_group=None
-        else:
-            task.status="Pending"
-            task.current_group=task.template_id.templategroup_set.get(number=task.level).group
-        task.save()
-        task_list=Task.objects.all()
-        groups=request.user.groups.all()
-        return HttpResponseRedirect('/Permission/pending-permissions/')
-    else:
-        return HttpResponseRedirect('/Permission/pending-permissions/')
-
-@login_required(login_url="/Permission/")
-@staff_member_required
+@login_required(login_url="/Permission")
 def denied(request, task_id):
-    task = Task.objects.get(id=task_id)
-    groups = request.user.groups.all()
-    if admin_is_in_current_group(task, groups):
-        task.level=-1
-        task.current_group=None
-        task.status="Denied"
-        task.approved_or_denied_by=task.approved_or_denied_by+"\n"+"Denied by: "+str(request.user.groups.all())
-        task.save()
-        task_list=Task.objects.all()
-        groups=request.user.groups.all()
-        return HttpResponseRedirect('/Permission/pending-permissions/')    
-    else:
-        return HttpResponseRedirect('/Permission/pending-permissions/')    
+    task = models.Task.objects.get(id=task_id)
+    task.status = "Denied"
+    task.save()
+    return render(request, 'Permission/reviewed.html',{
+            'reviewedTasks':findReviewedTasks(request.user),
+        })
 
-@login_required(login_url="/Permission/")
-@staff_member_required
-def pending_comment(request, task_id):
-    if request.method == 'POST':
+@login_required(login_url="/Permission")
+def delete(request, task_id):
+    models.Task.objects.get(id=task_id).delete()
+    full_name = request.user.first_name+" "+request.user.last_name
+    myTasks = []
+    for task in models.Task.objects.all():
+        if findFirstUser(task) == request.user.username:
+            myTasks.append(task)
+    return HttpResponseRedirect('/Permission/home')
+
+@login_required(login_url="/Permission")
+def edit(request, task_id):
+    users = User.objects.all()
+    users = users.exclude(username=request.user.username)
+    if request.method == "POST":
+        fileExtension = ''
+        try:
+            fileExtension = os.path.splitext(request.FILES['required_files'].name)[1]
+        except:
+            pass
+        form = forms.TaskForm(request.POST, request.FILES)
+        if form.is_valid() and fileExtension in extensions:
+            task = form.save(commit=False)
+            editTask = models.Task.objects.get(id=task_id)
+            editTask.permission_type = request.POST['permission_type']
+            editTask.subject = request.POST['subject']
+            editTask.description = request.POST['description']
+            editTask.special_mentions = request.POST['special_mentions']
+            
+            ############# Hard Coded ###############
+            if not editTask.required_files:
+                editTask.required_files = request.FILES['required_files']
+            ########################################
+            
+            editTask.urgency = datetime.datetime(int(request.POST['urgency_year']), int(request.POST['urgency_month']), int(request.POST['urgency_day']))
+            editTask.status_description = editTask.status_description + "->TaskEdited on " + str(datetime.datetime.now().date()) + " ->" + request.POST['user']
+            editTask.save()
+            return HttpResponseRedirect('/Permission/home')
+        elif fileExtension not in extensions:
+            return render(request, 'Permission/new_permission.html',{
+                'users':users,
+                'form':form,
+                'edit':True,
+                'task_id':task_id,
+                'success':False,
+                'message':"You can upload .jpg, .jpeg, .pdf and .png files only",
+                })
+        else:
+            return render(request, 'Permission/new_permission.html',{
+                'users':users,
+                'form':form,        
+                'edit':True,
+                'task_id':task_id,
+                'success':False,
+                'message':"Correct the error and resubmit the form."
+                })
+    form = forms.TaskForm(None, instance = models.Task.objects.get(id=task_id))
+
+    return render(request, 'Permission/new_permission.html',{
+        'form':form,
+        'users':users,
+        'edit':True,
+        'task_id':task_id,
+        })
+    
+@login_required(login_url='/Permission')
+def comment(request, task_id):
+    task = models.Task.objects.get(id=task_id)
+    users = User.objects.all().exclude(username=request.user.username)
+    commentForm = forms.CommentForm()
+    showOptions = False
+    if task.status == "Pending":
+        showOptions = True
+    if request.method == "POST":
         form = forms.CommentForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            if not Task.objects.get(id=task_id):
-                return HttpResponseRedirect('/Permission/pending-permissions/')
-            comment.task = Task.objects.get(id=task_id)
-            comment.user = request.user.username
-            comment.save()
-            url = '/Permission/'
-            url += task_id
-            url += '/pending/'
-            return HttpResponseRedirect(url)
-    else: 
-        return HttpResponseRedirect('/Permission/pending/')
-
-@login_required(login_url="/Permission/")
-def user_comment(request, task_id):
-    if request.method == 'POST':
-        form = forms.CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            if not Task.objects.get(id=task_id):
-                return HttpResponseRedirect('/Permission/home/')
-            comment.task = Task.objects.get(id=task_id)
-            comment.user = request.user.username
-            comment.save()
-            url = '/Permission/'
-            url += task_id
-            url += '/user/'
-            return HttpResponseRedirect(url)
-    else: 
-        return HttpResponseRedirect('/Permission/home/')
+            temp = form.save(commit=False)
+            temp.task = task
+            temp.user = request.user.username
+            form.save()
+    
+    return HttpResponseRedirect('/Permission/'+task_id+'/user')

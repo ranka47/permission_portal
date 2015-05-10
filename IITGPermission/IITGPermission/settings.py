@@ -26,7 +26,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTHENTICATION_BACKENDS = ('urlcrypt.auth_backends.UrlCryptBackend',)
+# AUTHENTICATION_BACKENDS = ('urlcrypt.auth_backends.UrlCryptBackend',)
 # Application definition
 
 INSTALLED_APPS = (
@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Permission',
-    'urlcrypt',
+    # 'south',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,5 +81,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Permission/media/')
+MEDIA_URL = '/media/'
 
 STATIC_URL = '/Permission/static/'

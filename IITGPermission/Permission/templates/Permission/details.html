@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block home %} class="active" {% endblock %}
+{% block main %}
+{% if user.username in task.status_description %}
+<h2 class="sub-header">{{task.permission_type}}</h2>
+<hr>
+
+<table class="table table-striped">
+    <tr><td><b>Task ID</b></td><td>{{task.id}}</td></tr>
+    <tr><td><b>Type of Permission</b></td><td>{{task.permission_type}}</td></tr>
+    <tr><td><b>Applicant's Name</b></td><td>{{task.applicant}}</td></tr>
+    <tr><td><b>Date of Application</b></td><td>{{task.date_of_application}}</td></tr>
+    <tr><td><b>Subject</b></td><td>{{task.subject}}</td></tr>
+    <tr><td><b>Description</b></td><td>{{task.description}}</td></tr>
+    <tr><td><b>Special Mentions</td><td>{{task.special_mentions}}</td></tr>
+    <tr><td><b>Documents Uploaded</b></td><td>{% if task.required_files %}<a href="/media/{{task.required_files.name}}"><img src="/media/{{task.required_files.name}}" width="80px" height="100px" alt="{{task.required_files.name}}"></a>{% else %}No documents Uploaded{% endif %}</td></tr>
+    <tr><td><b>Urgency</b></td><td>{{task.urgency}}</td></tr>
+    <tr><td><b>Status</b></td><td>{{task.status}}</td></tr>
+    <tr><td><b>Hierarchy</b></td><td>{{task.status_description}}</td></tr>
+    <tr><td><b>Pending from</b></td><td>{{lastUser}}</td></tr>
+</table>
+{% if task.status == "Accepted" %}
+        <form action="/Permission/{{task.id}}/getPDF/">
+            <td>
+                <button type="submit" class="submit">Download Confirmation</button>
+            </td>
+        </form>
+{% endif %}
+{% if showOptions %}
+<table  style="margin:10px">
+    <tr>
+    {% if user.username == "dos" %}
+        <form action="/Permission/{{task.id}}/accepted/">
+            <td>
+                <button type="submit" class="submit">Approve</button>
+            </td>
+        </form>
+        <form action="/Permission/{{task.id}}/denied">
+            <td>
+                <button type="submit" class="submit">Deny</button>
+            </td>
+        </form>
+    {% endif %}
+    {% if lastUser == user.username %}
+        <form action="/Permission/{{task.id}}/user/" method="POST">
+        {% csrf_token %}
+            <td>
+                <input list="users" placeholder="Pass the request to" name="user" required>
+                <datalist id="users">
+                {% for user in users %}
+                    <option value="{{user.username}}">{{user.first_name}} {{user.last_name}}</option>
+                {% endfor %}
+                </datalist>
+                <button type="submit" class="submit">Forwarded for Approval</button>
+            </td>
+        </form>
+    {% endif %}
+    {% if firstUser == lastUser and user.username == firstUser %}
+    <form action="/Permission/{{task.id}}/edit/">
+        <td>
+            <button type="submit" class="submit">Edit</button>
+        </td>
+    </form>
+    {% endif %}
+    </tr>
+</table>
+{% endif %}
+<hr>
+<div class="container" style=" margin-bottom: 30px">
+    <div class="col-md-4" style="background-color: #f5f5f5; padding-top: 10px; padding-bottom:20px;">
+        
+        {% if task.comment_set.all %}
+            <h4>Previous Comments</h4>
+        {% else %}
+            <h4>Comments</h4>
+            <p>No previous Comments.</p>
+        {% endif %}
+
+        <table class="table">
+            {% for comment in task.comment_set.all %}
+            <tr>
+                <td style="color: #428bca; font-weight: bold;">{{ comment.user }}</td>
+                <td>{{ comment.text }}</td>
+                <td style="font-size: 0.8em; color: #aaa;">{{ comment.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <form action="/Permission/{{ task.id }}/comment/" method="post" style="margin-bottom:10px;">
+            {% csrf_token %}
+            {{ commentForm }}
+        
+            </br><button type="submit" class="comment">Comment</button>
+        </form>
+
+    </div>
+</div>
+{% else %}
+<h3>You are not allowed to view the details of this request.</h3>
+{% endif %}
+
+{% endblock %}

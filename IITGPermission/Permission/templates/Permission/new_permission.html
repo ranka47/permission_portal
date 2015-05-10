@@ -3,13 +3,23 @@
 {% block main %}
 
 <h1 class="page-header">New Permission</h1>
-<form action="/Permission/submitted/" method="post">
+{% if edit %}
+<form class="form-horizontal" action="/Permission/{{task_id}}/edit-permission/" method="post" enctype="multipart/form-data">
+{% else %}
+<form class="form-horizontal" action="/Permission/new-permission/" method="post" enctype="multipart/form-data">
+{% endif %}
 	{% csrf_token %}
 	<table style="width:100%;">
 		
 		{{ form }}
 		
 	</table>
+	<input list="users" placeholder="Pass the request to" name="user" required>
+	<datalist id="users">
+	{% for user in users %}
+		<option value="{{user.username}}">{{user.first_name}} {{user.last_name}}</option>
+	{% endfor %}
+	</datalist>
 	<button type="submit" class="submit">Submit</button>
 </form>
 

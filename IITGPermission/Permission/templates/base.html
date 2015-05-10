@@ -34,22 +34,14 @@
                 <a href="/Permission/new-permission/">New Permission</a>
             </li>
 
-            {% if user.is_staff %}
-
             <li {% block pending-permissions %}{% endblock %}>
-                <a href="/Permission/pending-permissions/">Pending Permissions</a>
+                <a href="/Permission/pending/">Pending Permissions</a>
             </li>
             <li {% block permissions-done %}{% endblock %}>
-                <a href="/Permission/permissions-done/">Permissions Done</a>
+                <a href="/Permission/reviewed/">Permissions Reviewed</a>
             </li>
-            <!-- <li {% block new-template %}{% endblock %}>
-                <a href="/Permission/new-template/">New Template</a>
-            </li>
-            <li {% block existing-template %}{% endblock %}>
-                <a href="/Permission/existing-template/">Existing Template</a>
-            </li> -->
+  
 
-            {% endif %}
             <li><a href="/Permission/logout/">Logout</a></li>
             </ul>
         </div>
@@ -65,6 +57,8 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
+                        <h3 {% if success %}style="color:green" {% else %} style="color:red" {% endif %}>{{message}}</h3>
+
                         {% block main %}{% endblock %}
                     </div>
                 </div>
@@ -78,13 +72,21 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{% static 'Permission/js/jquery-1.11.0.js' %}"></script>
+    <link href= "{% static 'Permission/css/jquery.dataTables.min.css' %}" rel="stylesheet" type="text/css">
     <script src="{% static 'Permission/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'Permission/js/docs.min.js' %}"></script>
+    <script src="{% static 'Permission/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'Permission/js/jquery.min.js' %}"></script>
+    <script src="{% static 'Permission/js/jquery.dataTables.min.js' %}"></script> 
     <script>
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
-    </script>
+    $(document).ready(function(){
+    $('#myTable').dataTable();
+});
+</script>
   </body>
+ 
 </html>

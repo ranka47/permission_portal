@@ -1,0 +1,29 @@
+<!-- Shows Permissions on which decisions had been made -->
+{% extends "base.html" %}
+{% block permissions-done %} class="active" {% endblock %}
+{% block main %}
+<h1 class="page-header">Permissions Reviewed</h1>
+<table class="table table-striped" id="myTable">
+  <thead>
+          <th>Applicant name</th>
+          <th>Date of Application</th>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Urgency</th>
+  </thead>
+  <tbody>
+      {% for task in reviewedTasks %}
+              <tr>
+                  <td>{{ task.applicant}}</td>
+                  <td>{{ task.date_of_application }}</td>
+                  <td><a href="/Permission/{{ task.id }}/user ">{{ task.subject }}</a></td>
+                  <td>{{ task.status }}</td>
+                  <td>{{task.urgency}}</td>
+              </tr>  
+      {% endfor %}
+
+<tbody>
+            
+</table>
+{% endblock %}
+

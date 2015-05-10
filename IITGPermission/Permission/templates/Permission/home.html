@@ -3,24 +3,25 @@
 {% block main %}
 <h1 class="page-header">Howdy, {{ full_name }}!</h1>
 
-{% if user_has_tasks %}
+{% if tasks %}
 
 <p>Here are all previous permissions you've booked</p>
-<table class="table table-striped">
+<table class="col-lg-6 table table-striped" id="myTable">
     <thead>
         <th>Permission Type</th>
+        <th>Subject</th>
         <th>Status</th>
-        <th>Log</th>
+        <th>Urgency</th>
         <th>Delete</th>
     </thead>
     
     <tbody>
     {%for task in tasks %}
-        <tr>
-            {% if task.user_name == username %}
-                <td>{{ task.template_id }}</td>
+    <tr>
+                <td>{{ task.permission_type }}</td>
+                <td>{{ task.subject }}</td>
                 <td><a href="/Permission/{{ task.id }}/user">{{ task.status }}</a></td>
-                <td>{{task.created_at}}</td>
+                <td>{{task.urgency}}</td>
                 <td>
                     <form action="/Permission/{{task.id}}/delete/">
                         <script type="text/javascript"> 
@@ -32,11 +33,11 @@
                         <button type="submit" onclick="confirmDelete()">Delete</button>
                     </form>
                 </td>
-            {% endif %}
-        {% endfor %}
     </tr>
+    {% endfor %}
     </tbody>  
 </table>
+
 
 {%else %}
     <p>You have no previous permissions.</p>
